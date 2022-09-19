@@ -43,6 +43,10 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
 
+  router: {
+    base: '/asking/'
+  },
+
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
