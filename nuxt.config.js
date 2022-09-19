@@ -30,9 +30,7 @@ export default {
   plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: {
-    dirs: ['~/components']
-  },
+  components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -45,12 +43,6 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
 
-  router: {
-    base: '/asking/'
-  },
-  generate: {
-    fallback: true
-  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
