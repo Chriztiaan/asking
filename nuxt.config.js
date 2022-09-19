@@ -44,7 +44,7 @@ export default {
   modules: [],
 
   router: {
-    base: '/asking/'
+    base: '/asking/_nuxt/'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
