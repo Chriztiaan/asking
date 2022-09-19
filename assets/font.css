@@ -1,0 +1,93 @@
+.f-8 {
+    font-size: 8px !important;
+}
+
+.f-10 {
+    font-size: 10px !important;
+}
+
+.f-12 {
+    font-size: 12px !important;
+}
+
+.f-14 {
+    font-size: 14px !important;
+}
+
+.f-16 {
+    font-size: 16px;
+}
+
+.f-18 {
+    font-size: 18px !important;
+}
+
+.f-20 {
+    font-size: 20px !important;
+}
+
+.f-28 {
+    font-size: 28px !important;
+}
+
+.w-400 {
+    font-weight: 400   !important;
+}
+
+.w-500 {
+    font-weight: 500 !important;
+}
+
+.w-600 {
+    font-weight: 600   !important;
+}
+
+.w-700 {
+    font-weight: 700   !important;
+}
+
+.lh-16 {
+    line-height: 16px !important;
+}
+
+
+.lh-18 {
+    line-height: 18px !important;
+}
+
+.lh-20 {
+    line-height: 20px !important;
+}
+
+.v-input--switch.v-input--switch--inset {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    padding-left: 3px !important;
+    height: 22px;
+}
+
+.v-input--switch--inset .v-input--switch__track {
+	opacity: 0.2 !important;
+}
+
+.v-input--is-label-active.v-input--switch--inset .v-input--switch__track {
+	opacity: 1 !important;
+}
+.v-input--is-label-active.v-input--switch.v-input--dense.v-input--switch--inset .v-input--switch__track {
+	color: var(--v-primary-base) !important;
+}
+
+.v-input--is-label-active.v-input--switch.v-input--dense .v-input--switch__thumb {
+	color: white !important;
+}
+
+.v-input--is-label-active.v-input--switch .v-input--switch__thumb {
+	color: white !important;
+}
+
+
+.v-label {
+    color: var(--v-text-base) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+ }

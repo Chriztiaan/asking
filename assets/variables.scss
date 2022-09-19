@@ -2,3 +2,70 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '~vuetify/src/styles/styles.sass';
+
+$card-border-radius: 20px;
+$border-radius-root: 10px;
+
+$body-font-family: 'Exo', serif;
+$title-font: 'Exo';
+
+$text-color: (red);
+
+
+$card-text-padding: 20px;
+$card-subtitle-padding: 20px;
+
+$btn-text-transform: none;
+$btn-border-radius: 5px;
+
+$btn-font-weight: 700;
+$btn-sizes: (
+  (
+    'x-small': 20,
+    'small': 28,
+    'default': 40,
+    'large': 44,
+    'x-large': 52
+  )
+);
+
+
+$material-light: (
+  'text-fields': (
+    // 'outlined':  var(--v-background-base),
+    'outlined-hover': var(--v-primary-base)
+  ),
+);
+
+
+.v-text-field.v-text-field--enclosed .v-input__append-inner, .v-text-field.v-text-field--enclosed .v-input__prepend-inner {
+	margin-top: 12px !important;
+}
+
+.v-input--dense.v-text-field.v-text-field--enclosed .v-input__append-inner {
+	margin-top: 10px !important;
+}
+
+.v-input--dense.v-text-field.v-text-field--enclosed.v-autocomplete .v-input__append-inner {
+	margin-top: 4px !important;
+}
+
+.v-input--dense.v-text-field.v-text-field--enclosed .v-input__prepend-inner {
+	margin-top: 4px !important;
+}
+
+.v-text-field {
+	input,
+	.v-select__selection, textarea {
+		color: var(--v-text-base) !important;
+		font-weight: 500 !important;
+	}
+
+
+}
+
+.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+	color: var(--v-text-base) !important;
+}

@@ -24,7 +24,7 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    // css: ['~/assets/flex.css', '~/assets/font.css'],
+    css: ['~/assets/flex.css', '~/assets/font.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [{ src: '~/plugins/darkmode', mode: 'client' }],
