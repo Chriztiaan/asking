@@ -112,7 +112,7 @@
                 <div class="d-flex justify-space-between align-end">
                     <div class="subtext--text f-12 lh-12 w-600">Posted: {{ formatPostedDate(answerSet.created_at) }}</div>
                     <div class="d-flex gap-4">
-                        <icon-btn color="error">mdi-trash-can</icon-btn>
+                        <icon-btn color="error" @click="deleteAnswerSet(answerSet.id)">mdi-trash-can</icon-btn>
                         <icon-btn color="accent" @click="viewAnswers(i)">mdi-menu</icon-btn>
                     </div>
                 </div>
@@ -122,6 +122,8 @@
                 </div>
             </v-card>
         </div>
+
+        <snackbar v-model="showSnackbar" :text="snackbarText" />
     </div>
 </template>
 
@@ -135,7 +137,10 @@ import { isMobile } from '@/utils/screen';
 export default Vue.extend({
     data() {
         return {
-            viewEntry: undefined as number | undefined
+            viewEntry: undefined as number | undefined,
+
+            showSnackbar: false,
+            snackbarText: 'Copied to clipboard.'
         };
     },
     computed: {
@@ -168,6 +173,7 @@ export default Vue.extend({
         copyToClipboard(text: string): void {
             /* Copy the text inside the text field */
             navigator.clipboard.writeText(text);
+            this.showSnackbar = true;
         },
         formatPostedDate(value: string): string {
             if (value) {
@@ -179,6 +185,9 @@ export default Vue.extend({
                 return format(date, 'dd MMMM yyyy');
             }
             return 'unknown';
+        },
+        deleteAnswerSet(answerSetId: string): void {
+            useAnswerStore().deleteAnswerSet(answerSetId);
         }
     }
 });

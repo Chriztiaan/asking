@@ -42,6 +42,7 @@
                 <v-btn color="primary" :disabled="retrieving && !updating" :loading="updating" width="150" @click="save">Save</v-btn>
             </div>
         </div>
+        <snackbar v-model="showSnackbar" :text="snackbarText" />
     </div>
 </template>
 
@@ -60,7 +61,10 @@ export default Vue.extend({
             internalLeave: false,
             internalRemote: false,
 
-            internalTitle: ''
+            internalTitle: '',
+
+            showSnackbar: false,
+            snackbarText: 'Saved successfully.'
         };
     },
     computed: {
@@ -96,6 +100,11 @@ export default Vue.extend({
                 this.resetQuestionnaire();
             },
             immediate: true
+        },
+        updating(): void {
+            if (!this.updating) {
+                this.showSnackbar = true;
+            }
         }
     },
     mounted() {

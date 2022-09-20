@@ -9,7 +9,8 @@ export const useProfileStore = defineStore('profile', {
         retrieving: false,
         updating: false,
         profilePicture: '',
-        loadingProfilePicture: false
+        loadingProfilePicture: false,
+        updatingProfilePicture: false
     }),
 
     actions: {
@@ -42,6 +43,7 @@ export const useProfileStore = defineStore('profile', {
         },
         async uploadProfilePicture(file: File): Promise<void> {
             this.loadingProfilePicture = true;
+            this.updatingProfilePicture = true;
             this.profilePicture = '';
 
             const derivedUserId = useAuthStore().userId;
@@ -52,6 +54,7 @@ export const useProfileStore = defineStore('profile', {
             console.log(data);
             console.error(error);
             this.retrieveProfilePicture();
+            this.updatingProfilePicture = false;
         },
         async retrieveProfilePicture(): Promise<void> {
             this.loadingProfilePicture = true;

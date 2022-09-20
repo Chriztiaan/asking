@@ -85,6 +85,23 @@ export const useAnswerStore = defineStore('answer', {
             }
 
             this.loading = false;
-        }
-    }
+        },
+        async deleteAnswerSet(answerSetId: string): Promise<void> {
+            // this.internalQuestions.splice(index, 1);
+            const index = this.answerSets.findIndex(answerSet => answerSet.id == answerSetId);
+            if (index > -1) {
+                this.answerSets.splice(index, 1)
+            }
+
+            // const { data, error } = await supabase.from('answer_sets').select().match({ user_id: useAuthStore().userId }).limit(50);
+
+            // if (!error && !!data) {
+            //     this.answerSets = data;
+            // } else {
+            //     console.log(error);
+            // }
+
+            // this.loading = false;
+        },
+    },
 });
