@@ -1,9 +1,9 @@
 <template>
-  <v-row> Home </v-row>
+    <v-row> Home </v-row>
 </template>
 
 <script>
 export default {
-  name: 'HomePage',
-}
+    name: 'HomePage'
+};
 </script>
