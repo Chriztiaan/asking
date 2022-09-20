@@ -39,7 +39,7 @@
             <v-divider></v-divider>
             <div class="d-flex justify-end gap-4">
                 <v-btn text color="primary" width="150" @click="reset">Cancel</v-btn>
-                <v-btn color="primary" width="150" @click="save">Save</v-btn>
+                <v-btn color="primary" :disabled="retrieving && !updating" :loading="updating" width="150" @click="save">Save</v-btn>
             </div>
         </div>
     </div>
