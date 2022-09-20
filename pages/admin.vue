@@ -57,7 +57,7 @@
                     <!-- <dashboard v-if="isDashboard" /> -->
                     <questions v-if="isQuestions" />
                     <answers v-else-if="isAnswers" />
-                    <!-- <profile v-else-if="isProfile" /> -->
+                    <profile v-else-if="isProfile" />
                 </div>
             </v-col>
         </v-row>
