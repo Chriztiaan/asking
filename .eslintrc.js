@@ -5,11 +5,21 @@ module.exports = {
     node: true,
   },
   extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     '@nuxtjs/eslint-config-typescript',
+    'plugin:@typescript-eslint/recommended',
     'plugin:nuxt/recommended',
-    'prettier',
+    'plugin:prettier/recommended',
+    'plugin:vue/recommended',
+    '@vue/prettier',
   ],
-  plugins: [],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'vue/multi-word-component-names': 0,
+    eqeqeq: 'off',
+    'no-return-assign': 'off',
+    'no-console': 'off',
+  },
 }
