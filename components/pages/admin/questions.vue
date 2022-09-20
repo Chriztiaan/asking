@@ -133,10 +133,7 @@ export default Vue.extend({
             if (!this.questionnaire) {
                 return;
             }
-            const q = {
-                content: '',
-                questionnaire_id: this.questionnaire.user_id
-            } as Question;
+            const q = { content: '', questionnaire_id: this.questionnaire.user_id } as Question;
             this.internalQuestions.push(q);
         },
         save(): void {
