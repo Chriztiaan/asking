@@ -56,7 +56,7 @@
         <div style="max-width: 487px">
           <!-- <dashboard v-if="isDashboard" /> -->
           <questions v-if="isQuestions" />
-          <!-- <answers v-else-if="isAnswers" /> -->
+          <answers v-else-if="isAnswers" />
           <!-- <profile v-else-if="isProfile" /> -->
         </div>
       </v-col>
