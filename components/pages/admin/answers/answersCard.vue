@@ -7,13 +7,7 @@
                 <text-area loading>Notes</text-area>
             </template>
             <template v-else>
-                <text-field
-                    v-for="(p, i) in pairs"
-                    :key="i"
-                    :value="p.answer.content"
-                    disabled
-                    >{{ i + 1 }}. {{ p.question.content }}</text-field
-                >
+                <text-field v-for="(p, i) in pairs" :key="i" :value="p.answer.content" disabled>{{ i + 1 }}. {{ p.question.content }}</text-field>
                 <text-area :value="notes" disabled>Notes</text-area>
             </template>
         </div>
@@ -21,52 +15,46 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { useAnswerStore } from '@/store/answerStore'
-import { Answer, Question } from '@/store/types/DatabaseModels'
+import Vue from 'vue';
+import { useAnswerStore } from '@/store/answerStore';
+import { Answer, Question } from '@/store/types/DatabaseModels';
 export default Vue.extend({
     props: {
         answerSetId: {
             type: String,
-            default: '',
+            default: ''
         },
         notes: {
             type: String,
-            default: '',
-        },
+            default: ''
+        }
     },
     data() {
         return {
-            loading: false,
-        }
+            loading: false
+        };
     },
     computed: {
         answers(): Answer[] | undefined {
-            return useAnswerStore().answers.find(
-                (a) => a.key == this.answerSetId
-            )?.answers
+            return useAnswerStore().answers.find((a) => a.key == this.answerSetId)?.answers;
         },
         pairs(): Array<{ answer: Answer; question: Question }> | undefined {
             if (!this.answers) {
-                return undefined
+                return undefined;
             }
-            const answers = this.answers
+            const answers = this.answers;
             return useAnswerStore()
                 .pairs.filter((p) => answers.includes(p.answer))
-                .sort(
-                    (a, b) =>
-                        new Date(a.question.created_at as string).getTime() -
-                        new Date(b.question.created_at as string).getTime()
-                )
-        },
+                .sort((a, b) => new Date(a.question.created_at as string).getTime() - new Date(b.question.created_at as string).getTime());
+        }
     },
     mounted(): void {
         if (this.answerSetId && !this.answers) {
-            this.loading = true
+            this.loading = true;
             useAnswerStore()
                 .retrieveAnswers(this.answerSetId)
-                .then(() => (this.loading = false))
+                .then(() => (this.loading = false));
         }
-    },
-})
+    }
+});
 </script>
