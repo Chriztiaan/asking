@@ -114,9 +114,9 @@ export default Vue.extend({
         resetQuestionnaire(): void {
             if (this.questionnaire) {
                 this.internalTitle = this.questionnaire.title || '';
-                this.internalSalary = this.questionnaire.salary;
-                this.internalLeave = this.questionnaire.leave;
-                this.internalRemote = this.questionnaire.remote;
+                this.internalSalary = !!this.questionnaire.salary;
+                this.internalLeave = !!this.questionnaire.leave;
+                this.internalRemote = !!this.questionnaire.remote;
             }
         },
         resetQuestions(): void {

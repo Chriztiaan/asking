@@ -27,14 +27,14 @@ export default {
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
-    css: ['~/assets/flex.css', '~/assets/font.css'],
+    css: ['@/assets/flex.css', '@/assets/font.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [{ src: '~/plugins/darkmode', mode: 'client' }],
+    plugins: [{ src: '@/plugins/darkmode', mode: 'client' }],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: {
-        dirs: ['~/components', '~/components/text', '~/components/input', '~/components/pages/admin', '~/components/pages/admin/answers']
+        dirs: ['@/components', '@/components/text', '@/components/input', '@/components/pages/admin', '@/components/pages/admin/answers']
     },
     generate: {
         fallback: true
@@ -62,7 +62,7 @@ export default {
     vuetify: {
         treeShake: true,
 
-        customVariables: ['~/assets/variables.scss'],
+        customVariables: ['@/assets/variables.scss'],
         theme: {
             dark: false,
             themes: {
@@ -104,5 +104,7 @@ export default {
     },
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
-    build: {}
+    build: {
+        postcss: null
+    }
 };

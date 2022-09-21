@@ -15,7 +15,7 @@ export const useAnswerStore = defineStore('answer', {
 
     actions: {
         async retrieveAnswerSets(): Promise<void> {
-             this.answers = [];
+            this.answers = [];
             this.answerSets = [];
             this.loading = true;
 
@@ -51,7 +51,7 @@ export const useAnswerStore = defineStore('answer', {
                     answers.map((a) => a.question_id)
                 )
                 .limit(50);
-            console.log(data);
+
             if (!error && !!data) {
                 for (const answer of answers) {
                     const question = data.find((q) => q.id == answer.question_id);
@@ -88,22 +88,16 @@ export const useAnswerStore = defineStore('answer', {
         },
         async deleteAnswerSet(answerSetId: string): Promise<void> {
             // this.internalQuestions.splice(index, 1);
-            const index = this.answerSets.findIndex((answerSet) => answerSet.id == answerSetId);
-            if (index > -1) {
-                this.answerSets.splice(index, 1);
+
+            const { error } = await supabase.from('answer_sets').delete().match({ id: answerSetId });
+
+            if (!error) {
+                const index = this.answerSets.findIndex((answerSet) => answerSet.id == answerSetId);
+                if (index > -1) {
+                    console.log('Delete successful');
+                    this.answerSets.splice(index, 1);
+                }
             }
-
-            const { data, error } = supabase.from('answer_set').select();
-
-            // const { data, error } = await supabase.from('').select().match({ user_id: useAuthStore().userId }).limit(50);
-
-            // if (!error && !!data) {
-            //     this.answerSets = data;
-            // } else {
-            //     console.log(error);
-            // }
-
-            // this.loading = false;
         }
     }
 });

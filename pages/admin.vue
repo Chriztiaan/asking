@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import answers from '~/components/pages/admin/answers.vue';
+import answers from '@/components/pages/admin/answers.vue';
 
 enum Page {
     dashboard,
