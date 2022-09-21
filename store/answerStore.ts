@@ -88,12 +88,14 @@ export const useAnswerStore = defineStore('answer', {
         },
         async deleteAnswerSet(answerSetId: string): Promise<void> {
             // this.internalQuestions.splice(index, 1);
-            const index = this.answerSets.findIndex(answerSet => answerSet.id == answerSetId);
+            const index = this.answerSets.findIndex((answerSet) => answerSet.id == answerSetId);
             if (index > -1) {
-                this.answerSets.splice(index, 1)
+                this.answerSets.splice(index, 1);
             }
 
-            // const { data, error } = await supabase.from('answer_sets').select().match({ user_id: useAuthStore().userId }).limit(50);
+            const { data, error } = supabase.from('answer_set').select();
+
+            // const { data, error } = await supabase.from('').select().match({ user_id: useAuthStore().userId }).limit(50);
 
             // if (!error && !!data) {
             //     this.answerSets = data;
@@ -102,6 +104,6 @@ export const useAnswerStore = defineStore('answer', {
             // }
 
             // this.loading = false;
-        },
-    },
+        }
+    }
 });

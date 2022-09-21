@@ -17,7 +17,7 @@
   "dependencies": {
     "@nuxtjs/composition-api": "^0.32.0",
     "@pinia/nuxt": "^0.1.9",
-    "@supabase/supabase-js": "^2.0.0-rc.6",
+    "@supabase/supabase-js": "^2.0.0-rc.10",
     "@vue/eslint-config-prettier": "^7.0.0",
     "core-js": "^3.19.3",
     "date-fns": "^2.29.2",
