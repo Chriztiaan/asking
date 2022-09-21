@@ -9,15 +9,15 @@
                         Dashboard
                     </v-btn> -->
                     <v-btn text width="180" :class="{ selected: isQuestions }" class="f-18 w-500" @click="setPage(Page.questions)">
-                        <v-icon class="mr-4" color="tertiary" left size="24">mdi-clipboard-text</v-icon>
+                        <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiClipboardText }}</v-icon>
                         Questions
                     </v-btn>
                     <v-btn text width="180" :class="{ selected: isAnswers }" class="f-18 w-500" @click="setPage(Page.answers)">
-                        <v-icon class="mr-4" color="tertiary" left size="24">mdi-format-list-text</v-icon>
+                        <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiFormatListText }}</v-icon>
                         Answers
                     </v-btn>
                     <v-btn text width="180" :class="{ selected: isProfile }" class="f-18 w-500" @click="setPage(Page.profile)">
-                        <v-icon class="mr-4" color="tertiary" left size="24">mdi-account-circle</v-icon>
+                        <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiAccountCircle }}</v-icon>
                         Profile
                     </v-btn>
                 </div>
@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mdiClipboardText, mdiFormatListText, mdiAccountCircle } from '@mdi/js';
 import answers from '@/components/pages/admin/answers.vue';
 
 enum Page {
@@ -50,6 +51,9 @@ export default Vue.extend({
     layout: 'admin',
     data() {
         return {
+            mdiClipboardText,
+            mdiFormatListText,
+            mdiAccountCircle,
             bool: true,
             selectedPage: Page.questions,
             Page

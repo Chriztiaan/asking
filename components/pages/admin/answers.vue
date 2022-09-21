@@ -15,7 +15,7 @@
                     <div class="d-flex align-center gap-2">
                         <div class="d-flex align-center">
                             <template v-if="answerSet.remote == 0">
-                                <v-icon class="icon-margin-sm" color="tertiary">mdi-home</v-icon>
+                                <v-icon class="icon-margin-sm" color="tertiary">{{ mdiHome }}</v-icon>
                                 <div
                                     class="text--text w-600"
                                     :class="{
@@ -27,7 +27,7 @@
                                 </div>
                             </template>
                             <template v-else-if="answerSet.remote == 1">
-                                <v-icon class="icon-margin" color="tertiary">mdi-home-city</v-icon>
+                                <v-icon class="icon-margin" color="tertiary">{{ mdiHomeCity }}</v-icon>
                                 <div
                                     class="text--text w-600"
                                     :class="{
@@ -39,7 +39,7 @@
                                 </div>
                             </template>
                             <template v-else-if="answerSet.remote == 2">
-                                <v-icon class="icon-margin-sm" color="tertiary">mdi-home-off</v-icon>
+                                <v-icon class="icon-margin-sm" color="tertiary">{{ mdiHomeOff }}</v-icon>
                                 <div
                                     class="text--text w-600"
                                     :class="{
@@ -70,20 +70,20 @@
                             <div class="d-flex align-center gap-2 text--text w-400" :class="{ 'f-14': !isMobile, 'f-12': isMobile }">
                                 <div>{{ answerSet.email }}</div>
                                 <v-btn class="copy-btn" text min-width="12" width="12" max-height="20" height="20" @click="copyToClipboard(answerSet.email)">
-                                    <v-icon small>mdi-content-copy</v-icon>
+                                    <v-icon small>{{ mdiContentCopy }}</v-icon>
                                 </v-btn>
                             </div>
                             <div class="d-flex align-center gap-2 text--text w-400" :class="{ 'f-14': !isMobile, 'f-12': isMobile }">
                                 <div>{{ answerSet.phone_number }}</div>
                                 <v-btn class="copy-btn" text min-width="12" width="12" max-height="20" height="20" @click="copyToClipboard(answerSet.phone_number)">
-                                    <v-icon small>mdi-content-copy</v-icon>
+                                    <v-icon small>{{ mdiContentCopy }}</v-icon>
                                 </v-btn>
                             </div>
                         </div>
                         <v-spacer />
                         <div class="d-flex flex-column align-end gap-1 justify-start width-100">
                             <div class="d-flex align-center gap-1">
-                                <v-icon color="text lighten-4" size="20">mdi-credit-card-outline</v-icon>
+                                <v-icon color="text lighten-4" size="20">{{ mdiCreditCardOutline }}</v-icon>
                                 <div
                                     class="text--text text--lighten-4 w-400"
                                     :class="{
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-center gap-1">
-                                <v-icon color="text lighten-4" size="20">mdi-calendar</v-icon>
+                                <v-icon color="text lighten-4" size="20">{{ mdiCalendar }}}</v-icon>
                                 <div
                                     class="text--text text--lighten-4 w-400"
                                     :class="{
@@ -112,8 +112,8 @@
                 <div class="d-flex justify-space-between align-end">
                     <div class="subtext--text f-12 lh-12 w-600">Posted: {{ formatPostedDate(answerSet.created_at) }}</div>
                     <div class="d-flex gap-4">
-                        <icon-btn color="error" @click="deleteAnswerSet(answerSet.id)">mdi-trash-can</icon-btn>
-                        <icon-btn color="accent" @click="viewAnswers(i)">mdi-menu</icon-btn>
+                        <icon-btn color="error" @click="deleteAnswerSet(answerSet.id)">{{ mdiTrashCan }}</icon-btn>
+                        <icon-btn color="accent" @click="viewAnswers(i)">{{ mdiMenu }}</icon-btn>
                     </div>
                 </div>
 
@@ -130,6 +130,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { subDays, format, formatDistance } from 'date-fns';
+import { mdiHome, mdiHomeCity, mdiHomeOff, mdiMenu, mdiCreditCardOutline, mdiContentCopy, mdiCalendar, mdiTrashCan } from '@mdi/js';
 import { useAnswerStore } from '@/store/answerStore';
 import { AnswerSet } from '@/store/types/DatabaseModels';
 import { isMobile } from '@/utils/screen';
@@ -137,6 +138,15 @@ import { isMobile } from '@/utils/screen';
 export default Vue.extend({
     data() {
         return {
+            mdiHome,
+            mdiHomeCity,
+            mdiHomeOff,
+            mdiMenu,
+            mdiCalendar,
+            mdiTrashCan,
+            mdiCreditCardOutline,
+            mdiContentCopy,
+
             viewEntry: undefined as number | undefined,
 
             showSnackbar: false,

@@ -19,7 +19,7 @@
                         width="36"
                         @click="document.getElementById('uploader').click()"
                     >
-                        <v-icon size="20">mdi-camera</v-icon>
+                        <v-icon size="20">{{ mdiCamera }}</v-icon>
                     </v-btn>
                     <v-file-input
                         v-show="false"
@@ -30,7 +30,7 @@
                         accept="image/png, image/jpeg"
                         placeholder="Upload your documents"
                         label="File input"
-                        prepend-icon="mdi-paperclip"
+                        :prepend-icon="mdiPaperclip"
                     />
                 </div>
             </div>
@@ -71,12 +71,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mdiPaperclip, mdiCamera } from '@mdi/js';
 import { useProfileStore } from '@/store/profileStore';
 import { Profile } from '@/store/types/DatabaseModels';
 
 export default Vue.extend({
     data() {
         return {
+            mdiPaperclip,
+            mdiCamera,
             file: undefined as File | undefined,
             internalName: '',
             internalBio: '',

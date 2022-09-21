@@ -21,7 +21,7 @@
             <template v-if="!retrieving">
                 <div v-for="(q, i) in internalQuestions" :key="q.id" class="d-flex align-end gap-4">
                     <text-field v-model="q.content" :disabled="updating" placeholder="What would you like to ask?">{{ i + 1 }}.</text-field>
-                    <icon-btn color="error" :disabled="updating || retrieving" @click="removeQuestion(i)">mdi-trash-can</icon-btn>
+                    <icon-btn color="error" :disabled="updating || retrieving" @click="removeQuestion(i)">{{ mdiTrashCan }}</icon-btn>
                 </div>
             </template>
             <template v-else>
@@ -32,7 +32,7 @@
             </template>
 
             <v-btn v-ripple="false" class="pl-0" text plain width="220" :disabled="retrieving || updating" @click="addQuestion">
-                <v-icon left class="primary--text">mdi-plus-circle-outline</v-icon>
+                <v-icon left class="primary--text">{{ mdiPlusCircleOutline }}</v-icon>
                 <div class="link-btn" :class="retrieving || updating ? 'disabled--text' : 'primary--text'">Add another question</div>
             </v-btn>
 
@@ -48,6 +48,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mdiPlusCircleOutline, mdiTrashCan } from '@mdi/js';
 import { Question, Questionnaire } from '@/store/types/DatabaseModels';
 import { useQuestionnaireStore } from '@/store/questionnaireStore';
 import { useAuthStore } from '@/store/authStore';
@@ -55,6 +56,8 @@ import { useAuthStore } from '@/store/authStore';
 export default Vue.extend({
     data() {
         return {
+            mdiTrashCan,
+            mdiPlusCircleOutline,
             internalQuestions: [] as Question[],
 
             internalSalary: false,

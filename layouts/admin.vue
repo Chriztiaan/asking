@@ -16,13 +16,13 @@
                 </template>
                 <div class="d-flex gap-3 align-center">
                     <div class="d-flex align-center gap-2">
-                        <v-icon v-if="$vuetify.theme.dark">mdi-weather-night</v-icon>
-                        <v-icon v-else>mdi-white-balance-sunny</v-icon>
+                        <v-icon v-if="$vuetify.theme.dark">{{ mdiWeatherNight }}</v-icon>
+                        <v-icon v-else>{{ mdiWhiteBalanceSunny }}</v-icon>
                         <v-switch v-model="$vuetify.theme.dark" dense :dark="false" inset hide-details @change="changeDarkMode"></v-switch>
                     </div>
 
                     <v-btn icon height="24" width="24">
-                        <v-icon color="text" size="20">mdi-bell-outline</v-icon>
+                        <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
                     </v-btn>
                     <v-badge bordered bottom color="secondary" dot offset-x="10" offset-y="45">
                         <v-avatar size="50">
@@ -30,7 +30,7 @@
                         </v-avatar>
                     </v-badge>
                     <v-btn icon class="background" height="24" width="24">
-                        <v-icon color="black" size="20">mdi-chevron-down</v-icon>
+                        <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
                     </v-btn>
                 </div>
             </div>
@@ -45,13 +45,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
+import { mdiWeatherNight, mdiWhiteBalanceSunny, mdiBellOutline, mdiChevronDown } from '@mdi/js';
 import { isMobile } from '@/utils/screen';
 
 export default Vue.extend({
     name: 'AdminLayout',
     data() {
         return {
+            mdiWeatherNight,
+            mdiWhiteBalanceSunny,
+            mdiBellOutline,
+            mdiChevronDown,
             drawer: false
         };
     },

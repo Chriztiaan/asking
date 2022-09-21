@@ -5,7 +5,7 @@
         </div>
         <v-btn v-else :color="color" v-bind="$attrs" @click="$emit('click')">
             <v-icon>
-                <slot>mdi-home</slot>
+                <slot>{{ mdiHome }}</slot>
             </v-icon>
         </v-btn>
     </div>
@@ -13,6 +13,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mdiHome } from '@mdi/js';
+
 export default Vue.extend({
     props: {
         color: {
@@ -23,6 +25,9 @@ export default Vue.extend({
             type: Boolean,
             default: false
         }
+    },
+    data() {
+        return { mdiHome };
     }
 });
 </script>
