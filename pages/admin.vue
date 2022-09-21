@@ -22,8 +22,8 @@
                     </v-btn>
                 </div>
             </v-col>
-            <v-col class="" cols="12" md="6" style="max-width: 853px">
-                <div style="max-width: 487px">
+            <v-col class="d-flex justify-center justify-md-start" cols="12" md="6">
+                <div style="max-width: min(100%, 487px)" :style="!isMobile ? 'min-width: 487px;' : 'min-width: 100%;'">
                     <!-- <dashboard v-if="isDashboard" /> -->
                     <questions v-if="isQuestions" />
                     <answers v-else-if="isAnswers" />
