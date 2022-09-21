@@ -140,6 +140,6 @@ export interface Database {
                 };
             };
         };
-        Functions: {};
+        // Functions: {};
     };
 }
