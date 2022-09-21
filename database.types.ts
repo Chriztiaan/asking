@@ -1,0 +1,160 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json }
+  | Json[];
+
+export interface Database {
+  public: {
+    Tables: {
+      answers: {
+        Row: {
+          id: string;
+          content: string | null;
+          created_at: string | null;
+          answer_set_id: string;
+          question_id: string;
+        };
+        Insert: {
+          id?: string;
+          content?: string | null;
+          created_at?: string | null;
+          answer_set_id: string;
+          question_id: string;
+        };
+        Update: {
+          id?: string;
+          content?: string | null;
+          created_at?: string | null;
+          answer_set_id?: string;
+          question_id?: string;
+        };
+      };
+      answer_sets: {
+        Row: {
+          id: string;
+          company: string | null;
+          contact_person: string | null;
+          email: string | null;
+          created_at: string | null;
+          phone_number: string | null;
+          user_id: string | null;
+          notes: string | null;
+          salary: string | null;
+          leave: string | null;
+          remote: number | null;
+        };
+        Insert: {
+          id?: string;
+          company?: string | null;
+          contact_person?: string | null;
+          email?: string | null;
+          created_at?: string | null;
+          phone_number?: string | null;
+          user_id?: string | null;
+          notes?: string | null;
+          salary?: string | null;
+          leave?: string | null;
+          remote?: number | null;
+        };
+        Update: {
+          id?: string;
+          company?: string | null;
+          contact_person?: string | null;
+          email?: string | null;
+          created_at?: string | null;
+          phone_number?: string | null;
+          user_id?: string | null;
+          notes?: string | null;
+          salary?: string | null;
+          leave?: string | null;
+          remote?: number | null;
+        };
+      };
+      profiles: {
+        Row: {
+          user_id: string;
+          name: string | null;
+          bio: string | null;
+          profile: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          name?: string | null;
+          bio?: string | null;
+          profile?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          name?: string | null;
+          bio?: string | null;
+          profile?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      questionnaires: {
+        Row: {
+          user_id: string;
+          title: string | null;
+          created_at: string | null;
+          salary: boolean | null;
+          leave: boolean | null;
+          remote: boolean | null;
+        };
+        Insert: {
+          user_id: string;
+          title?: string | null;
+          created_at?: string | null;
+          salary?: boolean | null;
+          leave?: boolean | null;
+          remote?: boolean | null;
+        };
+        Update: {
+          user_id?: string;
+          title?: string | null;
+          created_at?: string | null;
+          salary?: boolean | null;
+          leave?: boolean | null;
+          remote?: boolean | null;
+        };
+      };
+      questions: {
+        Row: {
+          id: string;
+          created_at: string | null;
+          content: string | null;
+          questionnaire_id: string | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string | null;
+          content?: string | null;
+          questionnaire_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string | null;
+          content?: string | null;
+          questionnaire_id?: string | null;
+        };
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+  };
+}
+

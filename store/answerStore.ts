@@ -15,7 +15,7 @@ export const useAnswerStore = defineStore('answer', {
 
     actions: {
         async retrieveAnswerSets(): Promise<void> {
-            this.answers = [];
+             this.answers = [];
             this.answerSets = [];
             this.loading = true;
 
