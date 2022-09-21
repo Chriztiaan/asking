@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="d-flex align-center gap-1">
-                                <v-icon color="text lighten-4" size="20">{{ mdiCalendar }}}</v-icon>
+                                <v-icon color="text lighten-4" size="20">{{ mdiCalendar }}</v-icon>
                                 <div
                                     class="text--text text--lighten-4 w-400"
                                     :class="{
