@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
+import { notificationFailedSaved, notificationSaved, useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 import { Question, Questionnaire } from './types/DatabaseModels';
 
@@ -108,7 +109,9 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
 
             if (!insertError && !upsertError && !!insertData && !!upsertData) {
                 this.questions = [...upsertData, ...insertData];
+                useNotificationStore().addNotification(notificationSaved);
             } else {
+                useNotificationStore().addNotification(notificationFailedSaved);
                 console.log(insertError);
                 console.log(upsertError);
             }

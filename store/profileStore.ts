@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
+import { notificationFailedSaved, notificationSaved, notificationUploadProfilePicture, useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 import { Profile } from './types/DatabaseModels';
 
@@ -35,7 +36,9 @@ export const useProfileStore = defineStore('profile', {
 
             if (!error && !!data) {
                 this.profile = data;
+                useNotificationStore().addNotification(notificationSaved);
             } else {
+                useNotificationStore().addNotification(notificationFailedSaved);
                 console.log(error);
             }
 
@@ -51,6 +54,11 @@ export const useProfileStore = defineStore('profile', {
                 cacheControl: '3600',
                 upsert: true
             });
+            if (!error) {
+                useNotificationStore().addNotification(notificationUploadProfilePicture);
+            } else {
+                useNotificationStore().addNotification('Failed to update profile picture');
+            }
             console.log(data);
             console.error(error);
             this.retrieveProfilePicture();

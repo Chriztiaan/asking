@@ -65,7 +65,6 @@
                 <v-btn color="warning" width="150">Delete</v-btn>
             </div>
         </div>
-        <snackbar v-model="showSnackbar" :text="snackbarText" />
     </div>
 </template>
 
@@ -83,9 +82,6 @@ export default Vue.extend({
             file: undefined as File | undefined,
             internalName: '',
             internalBio: '',
-
-            showSnackbar: false,
-            snackbarText: 'Saved successfully.',
 
             // hackerman
             document
@@ -147,18 +143,6 @@ export default Vue.extend({
                 return;
             }
             useProfileStore().uploadProfilePicture(this.file);
-        },
-        updating(): void {
-            if (!this.updating) {
-                this.snackbarText = 'Saved successfully.';
-                this.showSnackbar = true;
-            }
-        },
-        updatingProfilePicture(): void {
-            if (!this.updatingProfilePicture) {
-                this.snackbarText = 'Uploaded profile picture.';
-                this.showSnackbar = true;
-            }
         }
     },
     mounted() {

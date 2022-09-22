@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
+import { notificationDelete, notificationDeleteFailed, useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 import { Answer, AnswerSet, Question } from './types/DatabaseModels';
 
@@ -95,8 +96,11 @@ export const useAnswerStore = defineStore('answer', {
                 const index = this.answerSets.findIndex((answerSet) => answerSet.id == answerSetId);
                 if (index > -1) {
                     console.log('Delete successful');
+                    useNotificationStore().addNotification(notificationDelete);
                     this.answerSets.splice(index, 1);
                 }
+            } else {
+                useNotificationStore().addNotification(notificationDeleteFailed);
             }
         }
     }

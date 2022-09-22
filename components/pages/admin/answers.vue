@@ -122,8 +122,6 @@
                 </div>
             </v-card>
         </div>
-
-        <snackbar v-model="showSnackbar" :text="snackbarText" />
     </div>
 </template>
 
@@ -134,6 +132,7 @@ import { mdiHome, mdiHomeCity, mdiHomeOff, mdiMenu, mdiCreditCardOutline, mdiCon
 import { useAnswerStore } from '@/store/answerStore';
 import { AnswerSet } from '@/store/types/DatabaseModels';
 import { isMobile } from '@/utils/screen';
+import { notificationCopiedClipboard, useNotificationStore } from '@/store/notificationStore';
 
 export default Vue.extend({
     data() {
@@ -147,10 +146,7 @@ export default Vue.extend({
             mdiCreditCardOutline,
             mdiContentCopy,
 
-            viewEntry: undefined as number | undefined,
-
-            showSnackbar: false,
-            snackbarText: 'Copied to clipboard.'
+            viewEntry: undefined as number | undefined
         };
     },
     computed: {
@@ -183,7 +179,7 @@ export default Vue.extend({
         copyToClipboard(text: string): void {
             /* Copy the text inside the text field */
             navigator.clipboard.writeText(text);
-            this.showSnackbar = true;
+            useNotificationStore().addNotification(notificationCopiedClipboard);
         },
         formatPostedDate(value: string): string {
             if (value) {

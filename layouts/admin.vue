@@ -40,6 +40,7 @@
                 <v-container> <Nuxt /> </v-container>
             </v-main>
         </v-main>
+        <snackbar />
     </v-app>
 </template>
 
