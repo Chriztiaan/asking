@@ -36,9 +36,9 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
 
             if (!error && !!data) {
                 this.questionnaire = data;
-                this.retrieveQuestionsByQuestionnaire(this.questionnaire!.user_id);
+                this.retrieveQuestionsByQuestionnaire(this.questionnaire.user_id);
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve questionnaire.');
             }
 
             this.loading = false;
@@ -52,7 +52,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
             if (!error) {
                 this.questions = data;
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve questions.');
             }
 
             this.questionsLoading = false;
@@ -65,7 +65,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
             if (!error && !!data) {
                 this.questionnaire = data;
             } else {
-                console.log(error);
+                useNotificationStore().addNotification(notificationFailedSaved);
             }
 
             this.updating = false;
@@ -82,7 +82,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
                 }
                 Object.assign(question, data);
             } else {
-                console.log(error);
+                useNotificationStore().addNotification(notificationFailedSaved);
             }
         },
 
@@ -112,8 +112,6 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
                 useNotificationStore().addNotification(notificationSaved);
             } else {
                 useNotificationStore().addNotification(notificationFailedSaved);
-                console.log(insertError);
-                console.log(upsertError);
             }
 
             this.questionsUpdating = false;

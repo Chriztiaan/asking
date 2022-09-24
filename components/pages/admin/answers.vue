@@ -129,12 +129,14 @@
 import Vue from 'vue';
 import { subDays, format, formatDistance } from 'date-fns';
 import { mdiHome, mdiHomeCity, mdiHomeOff, mdiMenu, mdiCreditCardOutline, mdiContentCopy, mdiCalendar, mdiTrashCan } from '@mdi/js';
+import answersCard from './answers/answersCard.vue';
 import { useAnswerStore } from '@/store/answerStore';
 import { AnswerSet } from '@/store/types/DatabaseModels';
 import { isMobile } from '@/utils/screen';
 import { notificationCopiedClipboard, useNotificationStore } from '@/store/notificationStore';
 
 export default Vue.extend({
+    components: { answersCard },
     data() {
         return {
             mdiHome,
@@ -158,11 +160,6 @@ export default Vue.extend({
         },
         isMobile(): boolean {
             return isMobile(this.$vuetify);
-        }
-    },
-    watch: {
-        answerSets(): void {
-            console.log(this.answerSets);
         }
     },
     mounted() {

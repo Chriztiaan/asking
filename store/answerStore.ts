@@ -25,7 +25,7 @@ export const useAnswerStore = defineStore('answer', {
             if (!error && !!data) {
                 this.answerSets = data;
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve answer sets.');
             }
 
             this.loading = false;
@@ -35,11 +35,9 @@ export const useAnswerStore = defineStore('answer', {
 
             if (!error && !!data) {
                 this.answers.push({ key: answerSetId, answers: data });
-                console.log('answers');
-                console.log(data);
                 await this.retrieveQuestionsForAnswers(data);
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve answers.');
             }
         },
         async retrieveQuestionsForAnswers(answers: Answer[]): Promise<void> {
@@ -63,7 +61,7 @@ export const useAnswerStore = defineStore('answer', {
                     }
                 }
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve questions.');
             }
         },
         async upsertAnswer(answer: Answer): Promise<void> {
@@ -82,7 +80,7 @@ export const useAnswerStore = defineStore('answer', {
                     }
                 }
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to create/update answers.');
             }
 
             this.loading = false;
@@ -95,7 +93,6 @@ export const useAnswerStore = defineStore('answer', {
             if (!error) {
                 const index = this.answerSets.findIndex((answerSet) => answerSet.id == answerSetId);
                 if (index > -1) {
-                    console.log('Delete successful');
                     useNotificationStore().addNotification(notificationDelete);
                     this.answerSets.splice(index, 1);
                 }

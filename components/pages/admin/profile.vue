@@ -147,7 +147,9 @@ export default Vue.extend({
     },
     mounted() {
         useProfileStore().retrieveProfile();
-        useProfileStore().retrieveProfilePicture();
+        if (!useProfileStore().profilePicture) {
+            useProfileStore().retrieveProfilePicture();
+        }
     },
     methods: {
         cancel(): void {

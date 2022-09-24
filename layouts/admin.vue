@@ -24,11 +24,7 @@
                     <v-btn icon height="24" width="24">
                         <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
                     </v-btn>
-                    <v-badge bordered bottom color="secondary" dot offset-x="10" offset-y="45">
-                        <v-avatar size="50">
-                            <v-img src="https://cdn.vuetifyjs.com/images/lists/2.jpg"></v-img>
-                        </v-avatar>
-                    </v-badge>
+                    <profile-avatar />
                     <v-btn icon class="background" height="24" width="24">
                         <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
                     </v-btn>

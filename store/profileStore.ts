@@ -24,7 +24,7 @@ export const useProfileStore = defineStore('profile', {
             if (!error && !!data) {
                 this.profile = data;
             } else {
-                console.log(error);
+                useNotificationStore().addNotification('Failed to retrieve profile.');
             }
 
             this.retrieving = false;
@@ -39,7 +39,6 @@ export const useProfileStore = defineStore('profile', {
                 useNotificationStore().addNotification(notificationSaved);
             } else {
                 useNotificationStore().addNotification(notificationFailedSaved);
-                console.log(error);
             }
 
             this.updating = false;
@@ -50,34 +49,31 @@ export const useProfileStore = defineStore('profile', {
             this.profilePicture = '';
 
             const derivedUserId = useAuthStore().userId;
-            const { data, error } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
+            const { error } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
                 cacheControl: '3600',
                 upsert: true
             });
+
             if (!error) {
                 useNotificationStore().addNotification(notificationUploadProfilePicture);
             } else {
                 useNotificationStore().addNotification('Failed to update profile picture');
+                console.error(error);
             }
-            console.log(data);
-            console.error(error);
             this.retrieveProfilePicture();
             this.updatingProfilePicture = false;
         },
-        async retrieveProfilePicture(): Promise<void> {
+        async retrieveProfilePicture(userId = ''): Promise<void> {
             this.loadingProfilePicture = true;
-            const derivedUserId = useAuthStore().userId;
+            const derivedUserId = userId || useAuthStore().userId;
 
             const { data, error } = await supabase.storage.from('avatars').createSignedUrl('public/' + derivedUserId, 60);
-            // await supabase.storage.from('avatars').
 
             if (!error && data.signedUrl) {
                 this.profilePicture = data.signedUrl;
-                console.log(this.profilePicture);
             } else {
                 this.profilePicture = '';
-                console.log(this.profilePicture);
-                console.error(error);
+                useNotificationStore().addNotification('Failed to retrieve profile picture.');
             }
 
             this.loadingProfilePicture = false;

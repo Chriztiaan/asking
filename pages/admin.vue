@@ -4,10 +4,6 @@
             <v-col cols="12" md="2" class="d-flex flex-column align-center align-md-start">
                 <header-1 :class="{ 'ml-4': !isMobile }">Manage</header-1>
                 <div class="mt-4 d-flex flex-column align-center align-md-start gap-3 manage-btns">
-                    <!-- <v-btn text width="180" :class="{ selected: isDashboard }" class="f-18 w-500" @click="setPage(Page.dashboard)">
-                        <v-icon class="mr-4" color="tertiary" left size="24">mdi-view-dashboard</v-icon>
-                        Dashboard
-                    </v-btn> -->
                     <v-btn text width="180" :class="{ selected: isQuestions }" class="f-18 w-500" @click="setPage(Page.questions)">
                         <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiClipboardText }}</v-icon>
                         Questions
@@ -24,7 +20,6 @@
             </v-col>
             <v-col class="d-flex justify-center justify-md-start" cols="12" md="6">
                 <div style="max-width: min(100%, 487px)" :style="!isMobile ? 'min-width: 487px;' : 'min-width: 100%;'">
-                    <!-- <dashboard v-if="isDashboard" /> -->
                     <questions v-if="isQuestions" />
                     <answers v-else-if="isAnswers" />
                     <profile v-else-if="isProfile" />
