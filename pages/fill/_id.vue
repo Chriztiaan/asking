@@ -1,44 +1,49 @@
 <template>
-    <div class="d-flex flex-column gap-5">
-        <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4">
-            <v-avatar size="75">
-                <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
-                    <v-progress-circular :size="75" :width="4" color="tertiary" indeterminate></v-progress-circular>
+    <div class="d-flex justify-center pb-2">
+        <div class="d-flex flex-column gap-8" :class="breakpoint" style="max-width: 800px">
+            <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4 flex-wrap">
+                <v-avatar size="75">
+                    <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
+                        <v-progress-circular :size="75" :width="4" color="tertiary" indeterminate></v-progress-circular>
+                    </div>
+                    <v-img v-else :src="profilePicture"></v-img>
+                </v-avatar>
+                <div class="f-16 w-500 text--text">{{ name }}</div>
+                <v-spacer />
+                <div class="f-14 w-400 text--text" style="min-width: 300px; max-width: 400px">{{ bio }}</div>
+            </v-card>
+
+            <header-3 class="mt-0">{{ questionnaireTitle }}</header-3>
+            <div class="d-flex flex-column gap-3">
+                <header-4>Job details</header-4>
+                <div class="d-flex gap-4 gap-row-5 flex-wrap">
+                    <text-field placeholder="Dream job">Company</text-field>
+                    <text-field v-if="salary" placeholder="22 schmeckles p/m">Salary</text-field>
+                    <text-field v-if="leave" placeholder="30 days p/a">Leave Policy</text-field>
+                    <dropdown v-if="remote" :items="remoteOptions">Remote Work Policy</dropdown>
                 </div>
-                <v-img v-else :src="profilePicture"></v-img>
-            </v-avatar>
-            <div class="f-16 w-500 text--text">{{ name }}</div>
-            <v-spacer />
-            <div class="f-14 w-400 text--text" style="max-width: 400px">{{ bio }}</div>
-        </v-card>
+            </div>
 
-        <header-3 class="mt-5">{{ questionnaireTitle }}</header-3>
-        <div class="d-flex flex-wrap gap-4">
-            <text-field v-if="salary">Salary</text-field>
-            <text-field v-if="leave">Leave</text-field>
-            <dropdown v-if="remote" :items="remoteOptions">Remote Work Policy</dropdown>
+            <div class="d-flex flex-column gap-3">
+                <header-4>Contact information</header-4>
+                <div class="d-flex gap-4 flex-wrap">
+                    <text-field placeholder="John Smith">Contact Person</text-field>
+                    <text-field placeholder="john@mail.com">Email</text-field>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex flex-column gap-5 custom-questions">
+                <header-4>Just a few more things</header-4>
+                <text-field v-for="(q, i) in questions" :key="q.id" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
+                <text-area>Notes</text-area>
+            </div>
+            <div class="d-flex flex-column gap-5">
+                <v-divider class="" />
+                <div class="d-flex justify-end">
+                    <v-btn color="primary" width="150">Submit</v-btn>
+                </div>
+            </div>
         </div>
-
-        <div class="mt-4 d-flex flex-column gap-5">
-            <text-field v-for="(q, i) in questions" :key="q.id" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
-            <text-area>Notes</text-area>
-        </div>
-        <!-- 
-
-        <div>Fill - {{ id }}</div>
-        <div>-------------</div>
-
-        <div>{{ name }}</div>
-        <div>{{ bio }}</div>
-        <div>{{ profilePicture }}</div>
-        <div>-------------</div>
-        <div>{{ questionnaireTitle }}</div>
-        <div>-------------</div>
-        <div>{{ salary }}</div>
-        <div>{{ leave }}</div>
-        <div>{{ remote }}</div>
-        <div>-------------</div>
-        <div>{{ questions }}</div> -->
     </div>
 </template>
 
@@ -117,6 +122,9 @@ export default Vue.extend({
         },
         questions(): Question[] {
             return useQuestionnaireStore().questions;
+        },
+        breakpoint(): string {
+            return this.$vuetify.breakpoint.name;
         }
     },
     watch: {
@@ -146,3 +154,39 @@ export default Vue.extend({
     }
 });
 </script>
+
+<style scoped lang="scss">
+.xs :deep(.text-field) {
+    width: 100% !important;
+}
+
+.sm :deep(.text-field) {
+    width: 48% !important;
+}
+
+.md :deep(.text-field) {
+    width: 49% !important;
+}
+
+:deep(.text-field) {
+    width: 32% !important;
+    min-width: 220px;
+    /* max-width: min(100%, 430px) !important; */
+}
+
+.xs .custom-questions :deep(.text-field) {
+    width: 100% !important;
+}
+
+.sm .custom-questions :deep(.text-field) {
+    width: 100% !important;
+}
+
+.md .custom-questions :deep(.text-field) {
+    width: 100% !important;
+}
+
+.custom-questions :deep(.text-field) {
+    width: 50% !important;
+}
+</style>

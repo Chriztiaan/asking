@@ -57,7 +57,6 @@ export default Vue.extend({
             mdiChevronDown,
 
             selectionValue: this.value && this.value.label ? this.value.label : this.items[0].label,
-            // selectionValue: this.items[0].label,
             internalValue: this.value ? this.value : this.items[0]
         };
     },
@@ -81,34 +80,32 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
-    .v-text-field.v-text-field--enclosed .v-text-field__details,
-    .v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot {
-        margin: 0;
-        max-height: 40px;
-        min-height: 40px !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-    .v-input--dense.v-text-field.v-text-field--enclosed .v-text-field__details,
-    .v-input--dense.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot {
-        max-height: 34px;
-        min-height: 34px !important;
-    }
-    .v-list-item.v-list-item--link {
-        padding-left: 12px !important;
-    }
-    input,
-    .v-select__selection {
-        color: var(--v-text-base) !important;
-        font-weight: 700 !important;
-    }
-    .v-select.v-select--is-menu-active .v-input__append-inner .v-icon {
-        transform: rotate(180deg) !important;
-    }
+:deep(.v-text-field.v-text-field--enclosed .v-text-field__details),
+:deep(.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot) {
+    margin: 0;
+    max-height: 40px;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+:deep(.v-input--dense.v-text-field.v-text-field--enclosed .v-text-field__details),
+:deep(.v-input--dense.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot) {
+    max-height: 34px;
+    min-height: 34px !important;
+}
+:deep(.v-list-item.v-list-item--link) {
+    padding-left: 12px !important;
+}
+:deep(input),
+:deep(.v-select__selection) {
+    color: var(--v-text-base) !important;
+    font-weight: 700 !important;
+}
+:deep(.v-select.v-select--is-menu-active .v-input__append-inner .v-icon) {
+    transform: rotate(180deg) !important;
+}
 
-    .v-input .v-input__slot .v-input__prepend-inner {
-        margin-top: 8px !important;
-    }
+:deep(.v-input .v-input__slot .v-input__prepend-inner) {
+    margin-top: 8px !important;
 }
 </style>
