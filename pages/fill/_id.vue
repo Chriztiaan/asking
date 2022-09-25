@@ -1,46 +1,75 @@
 <template>
     <div class="d-flex justify-center pb-2">
         <div class="d-flex flex-column gap-8" :class="breakpoint" style="max-width: 800px">
+            <v-btn @click="loading = !loading">{{ loading }}</v-btn>
             <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4 flex-wrap">
-                <v-avatar size="75">
-                    <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
-                        <v-progress-circular :size="75" :width="4" color="tertiary" indeterminate></v-progress-circular>
+                <template v-if="loading">
+                    <div>
+                        <v-skeleton-loader type="avatar" height="75" />
                     </div>
-                    <v-img v-else :src="profilePicture"></v-img>
-                </v-avatar>
-                <div class="f-16 w-500 text--text">{{ name }}</div>
-                <v-spacer />
-                <div class="f-14 w-400 text--text" style="min-width: 300px; max-width: 400px">{{ bio }}</div>
+                    <div>
+                        <v-skeleton-loader type="chip" class="name-loader"></v-skeleton-loader>
+                    </div>
+                    <v-spacer />
+                    <div class="width-50">
+                        <v-skeleton-loader v-if="loading" class="bio-loader" type="image"></v-skeleton-loader>
+                    </div>
+                </template>
+                <template v-else>
+                    <v-avatar size="75">
+                        <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
+                            <v-progress-circular :size="75" :width="4" color="tertiary" indeterminate></v-progress-circular>
+                        </div>
+                        <v-img v-else :src="profilePicture"></v-img>
+                    </v-avatar>
+                    <div class="f-16 w-500 text--text">{{ name }}</div>
+                    <v-spacer />
+                    <div class="f-14 w-400 text--text" style="min-width: 300px; max-width: 400px">{{ bio }}</div>
+                </template>
             </v-card>
 
-            <header-3 class="mt-0">{{ questionnaireTitle }}</header-3>
-            <div class="d-flex flex-column gap-3">
-                <header-4>Job details</header-4>
-                <div class="d-flex gap-4 gap-row-5 flex-wrap">
-                    <text-field placeholder="Dream job">Company</text-field>
-                    <text-field v-if="salary" placeholder="22 schmeckles p/m">Salary</text-field>
-                    <text-field v-if="leave" placeholder="30 days p/a">Leave Policy</text-field>
-                    <dropdown v-if="remote" :items="remoteOptions">Remote Work Policy</dropdown>
+            <template v-if="loading">
+                <div class="d-flex flex-column my-12">
+                    <div class="d-flex flex-wrap">
+                        <div v-for="i in 4" :key="i" class="yellow text-field"></div>
+                    </div>
+                    <div class="d-flex align-center justify-center" style="height: 150px">
+                        <v-progress-circular :size="100" :width="4" color="tertiary" indeterminate></v-progress-circular>
+                    </div>
                 </div>
-            </div>
-
-            <div class="d-flex flex-column gap-3">
-                <header-4>Contact information</header-4>
-                <div class="d-flex gap-4 flex-wrap">
-                    <text-field placeholder="John Smith">Contact Person</text-field>
-                    <text-field placeholder="john@mail.com">Email</text-field>
+            </template>
+            <template v-else>
+                <header-3 class="mt-0">
+                    {{ questionnaireTitle }}
+                </header-3>
+                <div class="d-flex flex-column gap-3">
+                    <header-4>Job details</header-4>
+                    <div class="d-flex gap-4 gap-row-5 flex-wrap">
+                        <text-field placeholder="Dream job">Company</text-field>
+                        <text-field v-if="salary" placeholder="22 schmeckles p/m">Salary</text-field>
+                        <text-field v-if="leave" placeholder="30 days p/a">Leave Policy</text-field>
+                        <dropdown v-if="remote" :items="remoteOptions">Remote Work Policy</dropdown>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-4 d-flex flex-column gap-5 custom-questions">
-                <header-4>Just a few more things</header-4>
-                <text-field v-for="(q, i) in questions" :key="q.id" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
-                <text-area>Notes</text-area>
-            </div>
+                <div class="d-flex flex-column gap-3">
+                    <header-4>Contact information</header-4>
+                    <div class="d-flex gap-4 flex-wrap">
+                        <text-field placeholder="John Smith">Contact Person</text-field>
+                        <text-field placeholder="john@mail.com">Email</text-field>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex flex-column gap-5 custom-questions">
+                    <header-4>Just a few more things</header-4>
+                    <text-field v-for="(q, i) in questions" :key="q.id" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
+                    <text-area>Notes</text-area>
+                </div>
+            </template>
             <div class="d-flex flex-column gap-5">
                 <v-divider class="" />
                 <div class="d-flex justify-end">
-                    <v-btn color="primary" width="150">Submit</v-btn>
+                    <v-btn color="primary" :disabled="loading" width="150">Submit</v-btn>
                 </div>
             </div>
         </div>
@@ -62,11 +91,8 @@ export default Vue.extend({
 
     data() {
         return {
-            // mdiHome,
-            // mdiHomeCity,
-            // mdiHomeOff,
-
             remoteOptions: [new DropdownOption('Remote', mdiHome), new DropdownOption('Hybrid', mdiHomeCity), new DropdownOption('No Remote', mdiHomeOff)],
+            loading: true,
             id: ''
         };
     },
@@ -188,5 +214,32 @@ export default Vue.extend({
 
 .custom-questions :deep(.text-field) {
     width: 50% !important;
+}
+
+:deep(.v-skeleton-loader__avatar) {
+    width: 75px !important;
+    height: 75px !important;
+}
+
+.bio-loader :deep(.v-skeleton-loader__image) {
+    // width: 100% !important;
+    height: 75px !important;
+    min-width: 400px;
+    max-width: 400px;
+}
+
+.xs,
+.sm {
+    .bio-loader :deep(.v-skeleton-loader__image) {
+        // width: 100% !important;
+        width: 300px !important;
+        min-width: 100% !important;
+    }
+}
+
+.name-loader :deep(.v-skeleton-loader__chip) {
+    width: 150px !important;
+    height: 40px;
+    border-radius: 10px;
 }
 </style>

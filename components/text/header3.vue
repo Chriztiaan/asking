@@ -1,7 +1,7 @@
 <template>
-	<div class="f-18 w-500">
-		<slot>Header 3</slot>
-	</div>
+    <div class="f-18 w-500">
+        <slot>Header 3</slot>
+    </div>
 </template>
 
 <script lang="ts">

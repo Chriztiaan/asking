@@ -67,7 +67,7 @@ export const useProfileStore = defineStore('profile', {
             this.loadingProfilePicture = true;
             const derivedUserId = userId || useAuthStore().userId;
 
-            const { data, error } = await supabase.storage.from('avatars').createSignedUrl('public/' + derivedUserId, 60);
+            const { data, error } = await supabase.storage.from('avatars').createSignedUrl('public/' + derivedUserId, 600000);
 
             if (!error && data.signedUrl) {
                 this.profilePicture = data.signedUrl;
