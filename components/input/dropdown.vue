@@ -2,7 +2,7 @@
     <div class="d-flex flex-column gap-1 text-field">
         <header-5><slot>&nbsp;</slot></header-5>
 
-        <v-select v-model="selectionValue" outlined hide-details item-value="label" :dense="dense" :items="items" :menu-props="{ 'offset-y': true }">
+        <v-select v-model="selectionValue" outlined hide-details item-value="label" v-bind="$attrs" :dense="dense" :items="items" :menu-props="{ 'offset-y': true }">
             <template v-if="internalValue.icon" #prepend-inner>
                 <v-icon color="tertiary" class="mr-2">{{ internalValue.icon }}</v-icon>
             </template>

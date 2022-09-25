@@ -1,9 +1,11 @@
 <template>
     <div class="d-flex justify-center pb-2">
-        <div class="d-flex flex-column gap-8" :class="breakpoint" style="max-width: 800px">
-            <v-btn @click="loading = !loading">{{ loading }}</v-btn>
+        <div v-if="submitted" class="d-flex flex-column justify-center" style="height: 300px">
+            <header-1>Thank you!</header-1>
+        </div>
+        <div v-else class="d-flex flex-column gap-8" :class="breakpoint" style="max-width: 800px">
             <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4 flex-wrap">
-                <template v-if="loading">
+                <template v-if="loadingProfileCard">
                     <div>
                         <v-skeleton-loader type="avatar" height="75" />
                     </div>
@@ -12,15 +14,12 @@
                     </div>
                     <v-spacer />
                     <div class="width-50">
-                        <v-skeleton-loader v-if="loading" class="bio-loader" type="image"></v-skeleton-loader>
+                        <v-skeleton-loader class="bio-loader" type="image"></v-skeleton-loader>
                     </div>
                 </template>
                 <template v-else>
                     <v-avatar size="75">
-                        <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
-                            <v-progress-circular :size="75" :width="4" color="tertiary" indeterminate></v-progress-circular>
-                        </div>
-                        <v-img v-else :src="profilePicture"></v-img>
+                        <v-img :src="profilePicture"></v-img>
                     </v-avatar>
                     <div class="f-16 w-500 text--text">{{ name }}</div>
                     <v-spacer />
@@ -28,7 +27,7 @@
                 </template>
             </v-card>
 
-            <template v-if="loading">
+            <template v-if="loadingQuestions">
                 <div class="d-flex flex-column my-12">
                     <div class="d-flex flex-wrap">
                         <div v-for="i in 4" :key="i" class="yellow text-field"></div>
@@ -45,31 +44,31 @@
                 <div class="d-flex flex-column gap-3">
                     <header-4>Job details</header-4>
                     <div class="d-flex gap-4 gap-row-5 flex-wrap">
-                        <text-field placeholder="Dream job">Company</text-field>
-                        <text-field v-if="salary" placeholder="22 schmeckles p/m">Salary</text-field>
-                        <text-field v-if="leave" placeholder="30 days p/a">Leave Policy</text-field>
-                        <dropdown v-if="remote" :items="remoteOptions">Remote Work Policy</dropdown>
+                        <text-field :disabled="submitting" placeholder="Dream Company">Company</text-field>
+                        <text-field v-if="salary" :disabled="submitting" placeholder="22 schmeckles p/m">Salary</text-field>
+                        <text-field v-if="leave" :disabled="submitting" placeholder="30 days p/a">Leave Policy</text-field>
+                        <dropdown v-if="remote" :disabled="submitting" :items="remoteOptions">Remote Work Policy</dropdown>
                     </div>
                 </div>
 
                 <div class="d-flex flex-column gap-3">
                     <header-4>Contact information</header-4>
                     <div class="d-flex gap-4 flex-wrap">
-                        <text-field placeholder="John Smith">Contact Person</text-field>
-                        <text-field placeholder="john@mail.com">Email</text-field>
+                        <text-field :disabled="submitting" placeholder="John Smith">Contact Person</text-field>
+                        <text-field :disabled="submitting" placeholder="john@mail.com">Email</text-field>
                     </div>
                 </div>
 
                 <div class="mt-4 d-flex flex-column gap-5 custom-questions">
                     <header-4>Just a few more things</header-4>
-                    <text-field v-for="(q, i) in questions" :key="q.id" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
-                    <text-area>Notes</text-area>
+                    <text-field v-for="(q, i) in questions" :key="q.id" :disabled="submitting" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
+                    <text-area :disabled="submitting">Notes</text-area>
                 </div>
             </template>
             <div class="d-flex flex-column gap-5">
                 <v-divider class="" />
                 <div class="d-flex justify-end">
-                    <v-btn color="primary" :disabled="loading" width="150">Submit</v-btn>
+                    <v-btn color="primary" :disabled="loadingProfileCard || loadingQuestions || submitting" :loading="submitting" width="150" @click="submit">Submit</v-btn>
                 </div>
             </div>
         </div>
@@ -84,6 +83,8 @@ import { useQuestionnaireStore } from '@/store/questionnaireStore';
 import { Profile, Question, Questionnaire } from '@/store/types/DatabaseModels';
 import DropdownOption from '@/components/input/dropdownOption';
 import dropdown from '@/components/input/dropdown.vue';
+import { useAnswerStore } from '@/store/answerStore';
+
 export default Vue.extend({
     name: 'FillPage',
     components: { dropdown },
@@ -92,11 +93,16 @@ export default Vue.extend({
     data() {
         return {
             remoteOptions: [new DropdownOption('Remote', mdiHome), new DropdownOption('Hybrid', mdiHomeCity), new DropdownOption('No Remote', mdiHomeOff)],
-            loading: true,
             id: ''
         };
     },
     computed: {
+        loadingProfileCard(): boolean {
+            return useProfileStore().loadingProfilePicture || useProfileStore().retrieving;
+        },
+        loadingQuestions(): boolean {
+            return useQuestionnaireStore().loading || useQuestionnaireStore().questionsLoading;
+        },
         profile(): Profile | undefined {
             return useProfileStore().profile;
         },
@@ -121,9 +127,6 @@ export default Vue.extend({
             }
             return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6aMSd6UXIgSwBn5c9fvTlZwMjPjeP7vGfnSXXMy68evP4I6USVcPZqq5OYSbxUAtdbEk&usqp=CAU';
         },
-        loadingProfilePicture(): boolean {
-            return useProfileStore().loadingProfilePicture;
-        },
 
         questionnaire(): Questionnaire | undefined {
             return useQuestionnaireStore().questionnaire;
@@ -142,7 +145,6 @@ export default Vue.extend({
             return this.questionnaire?.leave || false;
         },
 
-        // Tri state
         remote(): boolean {
             return this.questionnaire?.remote || false;
         },
@@ -151,6 +153,13 @@ export default Vue.extend({
         },
         breakpoint(): string {
             return this.$vuetify.breakpoint.name;
+        },
+
+        submitting(): boolean {
+            return useAnswerStore().answersSubmitting;
+        },
+        submitted(): boolean {
+            return useAnswerStore().submitted;
         }
     },
     watch: {
@@ -165,9 +174,6 @@ export default Vue.extend({
             immediate: true
         }
     },
-    mounted(): void {
-        console.log(this.$route.params);
-    },
     methods: {
         retrieveInformation(): void {
             // profile
@@ -176,6 +182,9 @@ export default Vue.extend({
             useProfileStore().retrieveProfilePicture(this.id);
             // questionnaire
             useQuestionnaireStore().retrieveQuestionnaire(this.id);
+        },
+        submit(): void {
+            useAnswerStore().submitAnswers({} as any, {} as any);
         }
     }
 });

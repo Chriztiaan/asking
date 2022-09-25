@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
-import { notificationDelete, notificationDeleteFailed, useNotificationStore } from './notificationStore';
+import { notificationDelete, notificationDeleteFailed, notificationFailedSubmit, useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 import { Answer, AnswerSet, Question } from './types/DatabaseModels';
 
@@ -11,7 +11,10 @@ export const useAnswerStore = defineStore('answer', {
         // Contains answers per answer set
         answers: [] as Array<{ key: string; answers: Answer[] }>,
         // Contains mappings between answers and their questions
-        pairs: [] as Array<{ answer: Answer; question: Question }>
+        pairs: [] as Array<{ answer: Answer; question: Question }>,
+
+        answersSubmitting: false,
+        submitted: false
     }),
 
     actions: {
@@ -64,27 +67,27 @@ export const useAnswerStore = defineStore('answer', {
                 useNotificationStore().addNotification('Failed to retrieve questions.');
             }
         },
-        async upsertAnswer(answer: Answer): Promise<void> {
-            this.loading = true;
+        // async upsertAnswer(answer: Answer): Promise<void> {
+        //     this.loading = true;
 
-            const { data, error } = await supabase.from('answers').upsert(answer).select().single();
+        //     const { data, error } = await supabase.from('answers').upsert(answer).select().single();
 
-            if (!error && !!data) {
-                const answersSetEntry = this.answers.find((list) => list.key == data.answer_set_id);
-                if (answersSetEntry) {
-                    const answerEntry = answersSetEntry.answers.find((a) => a.id == data.id);
-                    if (answerEntry) {
-                        Object.assign(answerEntry, data);
-                    } else {
-                        answersSetEntry.answers.push(data);
-                    }
-                }
-            } else {
-                useNotificationStore().addNotification('Failed to create/update answers.');
-            }
+        //     if (!error && !!data) {
+        //         const answersSetEntry = this.answers.find((list) => list.key == data.answer_set_id);
+        //         if (answersSetEntry) {
+        //             const answerEntry = answersSetEntry.answers.find((a) => a.id == data.id);
+        //             if (answerEntry) {
+        //                 Object.assign(answerEntry, data);
+        //             } else {
+        //                 answersSetEntry.answers.push(data);
+        //             }
+        //         }
+        //     } else {
+        //         useNotificationStore().addNotification('Failed to create/update answers.');
+        //     }
 
-            this.loading = false;
-        },
+        //     this.loading = false;
+        // },
         async deleteAnswerSet(answerSetId: string): Promise<void> {
             // this.internalQuestions.splice(index, 1);
 
@@ -98,6 +101,28 @@ export const useAnswerStore = defineStore('answer', {
                 }
             } else {
                 useNotificationStore().addNotification(notificationDeleteFailed);
+            }
+        },
+
+        async submitAnswers(answerSet: AnswerSet, answers: Answer[]): Promise<void> {
+            this.answersSubmitting = true;
+            const { error: answerSetError } = await supabase.from('answer_sets').insert(answerSet);
+            try {
+                if (answerSetError) {
+                    useNotificationStore().addNotification(notificationFailedSubmit);
+                    return;
+                }
+
+                const { error } = await supabase.from('answers').insert(answers);
+                if (error) {
+                    useNotificationStore().addNotification(notificationFailedSubmit);
+                    return;
+                }
+
+                useNotificationStore().addNotification(notificationFailedSubmit);
+            } finally {
+                this.answersSubmitting = false;
+                this.submitted = true;
             }
         }
     }

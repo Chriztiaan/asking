@@ -14,6 +14,9 @@ export class Notification {
 export const notificationDelete = 'Deleted successfully.';
 export const notificationDeleteFailed = 'Failed to delete.';
 
+export const notificationFailedSubmit = 'Failed to submit.';
+export const notificationSubmit = 'Submitted successfully.';
+
 export const notificationFailedSaved = 'Failed to save.';
 export const notificationSaved = 'Saved successfully.';
 export const notificationUploadProfilePicture = 'Uploaded profile picture.';
