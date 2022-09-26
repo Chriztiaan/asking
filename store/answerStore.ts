@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useAuthStore } from './authStore';
-import { notificationDelete, notificationDeleteFailed, notificationFailedSubmit, useNotificationStore } from './notificationStore';
+import { notificationDelete, notificationDeleteFailed, notificationFailedSubmit, notificationSubmit, useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 import { Answer, AnswerSet, Question } from './types/DatabaseModels';
 
@@ -89,8 +89,6 @@ export const useAnswerStore = defineStore('answer', {
         //     this.loading = false;
         // },
         async deleteAnswerSet(answerSetId: string): Promise<void> {
-            // this.internalQuestions.splice(index, 1);
-
             const { error } = await supabase.from('answer_sets').delete().match({ id: answerSetId });
 
             if (!error) {
@@ -119,10 +117,10 @@ export const useAnswerStore = defineStore('answer', {
                     return;
                 }
 
-                useNotificationStore().addNotification(notificationFailedSubmit);
+                useNotificationStore().addNotification(notificationSubmit);
+                this.submitted = true;
             } finally {
                 this.answersSubmitting = false;
-                this.submitted = true;
             }
         }
     }

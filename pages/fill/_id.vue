@@ -1,9 +1,10 @@
 <template>
     <div class="d-flex justify-center pb-2">
-        <div v-if="submitted" class="d-flex flex-column justify-center" style="height: 300px">
+        <div v-if="submitted" class="d-flex flex-column justify-center align-center" style="height: 300px">
             <header-1>Thank you!</header-1>
+            <div class="w-500 f-14 subtext--text">We'll make sure it gets to {{ name }} :)</div>
         </div>
-        <div v-else class="d-flex flex-column gap-8" :class="breakpoint" style="max-width: 800px">
+        <div v-else class="d-flex flex-column gap-8" :class="breakpoint" style="width: 800px; max-width: 800px">
             <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4 flex-wrap">
                 <template v-if="loadingProfileCard">
                     <div>
@@ -28,13 +29,8 @@
             </v-card>
 
             <template v-if="loadingQuestions">
-                <div class="d-flex flex-column my-12">
-                    <div class="d-flex flex-wrap">
-                        <div v-for="i in 4" :key="i" class="yellow text-field"></div>
-                    </div>
-                    <div class="d-flex align-center justify-center" style="height: 150px">
-                        <v-progress-circular :size="100" :width="4" color="tertiary" indeterminate></v-progress-circular>
-                    </div>
+                <div class="d-flex align-center justify-center my-12" style="height: 150px">
+                    <v-progress-circular :size="100" :width="4" color="tertiary" indeterminate></v-progress-circular>
                 </div>
             </template>
             <template v-else>
@@ -44,25 +40,25 @@
                 <div class="d-flex flex-column gap-3">
                     <header-4>Job details</header-4>
                     <div class="d-flex gap-4 gap-row-5 flex-wrap">
-                        <text-field :disabled="submitting" placeholder="Dream Company">Company</text-field>
-                        <text-field v-if="salary" :disabled="submitting" placeholder="22 schmeckles p/m">Salary</text-field>
-                        <text-field v-if="leave" :disabled="submitting" placeholder="30 days p/a">Leave Policy</text-field>
-                        <dropdown v-if="remote" :disabled="submitting" :items="remoteOptions">Remote Work Policy</dropdown>
+                        <text-field v-model="answerSet.company" :disabled="submitting" placeholder="Dream Company">Company</text-field>
+                        <text-field v-if="salary" v-model="answerSet.salary" :disabled="submitting" placeholder="22 schmeckles p/m">Salary</text-field>
+                        <text-field v-if="leave" v-model="answerSet.leave" :disabled="submitting" placeholder="30 days p/a">Leave Policy</text-field>
+                        <dropdown v-if="remote" :disabled="submitting" :items="remoteOptions" @input="updateDropdown">Remote Work Policy</dropdown>
                     </div>
                 </div>
 
                 <div class="d-flex flex-column gap-3">
                     <header-4>Contact information</header-4>
                     <div class="d-flex gap-4 flex-wrap">
-                        <text-field :disabled="submitting" placeholder="John Smith">Contact Person</text-field>
-                        <text-field :disabled="submitting" placeholder="john@mail.com">Email</text-field>
+                        <text-field v-model="answerSet.contact_person" :disabled="submitting" placeholder="John Smith">Contact Person</text-field>
+                        <text-field v-model="answerSet.email" :disabled="submitting" placeholder="john@mail.com">Email</text-field>
                     </div>
                 </div>
 
                 <div class="mt-4 d-flex flex-column gap-5 custom-questions">
                     <header-4>Just a few more things</header-4>
-                    <text-field v-for="(q, i) in questions" :key="q.id" :disabled="submitting" placeholder="">{{ i + 1 }}. {{ q.content }}</text-field>
-                    <text-area :disabled="submitting">Notes</text-area>
+                    <text-field v-for="(q, i) in questions" :key="q.id" v-model="answers[i].content" :disabled="submitting"> {{ i + 1 }}. {{ q.content }} </text-field>
+                    <text-area v-model="answerSet.notes" :disabled="submitting" placeholder="Add anything else here">Notes</text-area>
                 </div>
             </template>
             <div class="d-flex flex-column gap-5">
@@ -78,9 +74,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mdiHome, mdiHomeCity, mdiHomeOff } from '@mdi/js';
+import { v4 as uuid } from 'uuid';
 import { useProfileStore } from '@/store/profileStore';
 import { useQuestionnaireStore } from '@/store/questionnaireStore';
-import { Profile, Question, Questionnaire } from '@/store/types/DatabaseModels';
+import { Answer, AnswerSet, Profile, Question, Questionnaire } from '@/store/types/DatabaseModels';
 import DropdownOption from '@/components/input/dropdownOption';
 import dropdown from '@/components/input/dropdown.vue';
 import { useAnswerStore } from '@/store/answerStore';
@@ -92,8 +89,11 @@ export default Vue.extend({
 
     data() {
         return {
-            remoteOptions: [new DropdownOption('Remote', mdiHome), new DropdownOption('Hybrid', mdiHomeCity), new DropdownOption('No Remote', mdiHomeOff)],
-            id: ''
+            remoteOptions: [new DropdownOption('Fully Remote', mdiHome), new DropdownOption('Hybrid', mdiHomeCity), new DropdownOption('No Remote Work', mdiHomeOff)],
+            id: '',
+
+            answerSet: { id: uuid(), company: '', contact_person: '', email: '', phone_number: '', notes: '', salary: '', leave: '', remote: 0 } as AnswerSet,
+            answers: [] as Answer[]
         };
     },
     computed: {
@@ -167,11 +167,17 @@ export default Vue.extend({
             handler(): void {
                 // handler
                 this.id = this.$route.params.id;
+                this.answerSet.user_id = this.id;
+
                 if (this.id) {
                     this.retrieveInformation();
                 }
             },
             immediate: true
+        },
+        questions(): void {
+            this.answers = [];
+            this.questions.forEach((q) => this.answers.push({ id: uuid(), question_id: q.id, content: '', answer_set_id: this.answerSet.id } as Answer));
         }
     },
     methods: {
@@ -184,7 +190,13 @@ export default Vue.extend({
             useQuestionnaireStore().retrieveQuestionnaire(this.id);
         },
         submit(): void {
-            useAnswerStore().submitAnswers({} as any, {} as any);
+            useAnswerStore().submitAnswers(this.answerSet, this.answers);
+        },
+        updateDropdown(value: DropdownOption): void {
+            const index = this.remoteOptions.findIndex((o) => o.label == value.label);
+            if (index != -1) {
+                this.answerSet.remote = index;
+            }
         }
     }
 });

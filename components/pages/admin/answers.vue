@@ -61,10 +61,10 @@
                 </div>
 
                 <div class="d-flex justify-space-between align-center">
-                    <div class="d-flex gap-5 width-100 align-center" style="min-width: 280px">
+                    <div class="d-flex gap-5 width-100 align-start" style="min-width: 280px">
                         <div v-if="!isMobile" class="d-flex flex-column gap-1" style="max-width: 60px">
                             <div class="tertiary--text f-14 w-400">Email:</div>
-                            <div class="tertiary--text f-14 w-400">Phone:</div>
+                            <!-- <div class="tertiary--text f-14 w-400">Phone:</div> -->
                         </div>
                         <div class="d-flex flex-column gap-1">
                             <div class="d-flex align-center gap-2 text--text w-400" :class="{ 'f-14': !isMobile, 'f-12': isMobile }">
@@ -73,12 +73,12 @@
                                     <v-icon small>{{ mdiContentCopy }}</v-icon>
                                 </v-btn>
                             </div>
-                            <div class="d-flex align-center gap-2 text--text w-400" :class="{ 'f-14': !isMobile, 'f-12': isMobile }">
+                            <!-- <div class="d-flex align-center gap-2 text--text w-400" :class="{ 'f-14': !isMobile, 'f-12': isMobile }">
                                 <div>{{ answerSet.phone_number }}</div>
                                 <v-btn class="copy-btn" text min-width="12" width="12" max-height="20" height="20" @click="copyToClipboard(answerSet.phone_number)">
                                     <v-icon small>{{ mdiContentCopy }}</v-icon>
                                 </v-btn>
-                            </div>
+                            </div> -->
                         </div>
                         <v-spacer />
                         <div class="d-flex flex-column align-end gap-1 justify-start width-100">
