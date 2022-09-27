@@ -4,6 +4,11 @@
             <header-1>Thank you!</header-1>
             <div class="w-500 f-14 subtext--text">We'll make sure it gets to {{ name }} :)</div>
         </div>
+        <div v-else-if="errorState" class="d-flex flex-column justify-center align-center" style="height: 300px">
+            <header-1>Sorry</header-1>
+            <div class="w-500 f-14 subtext--text">This user doesn't exist :(</div>
+        </div>
+
         <div v-else class="d-flex flex-column gap-8" :class="breakpoint" style="width: 800px; max-width: 800px">
             <v-card elevation="4" class="pa-5 d-flex justify-start align-center gap-4 flex-wrap">
                 <template v-if="loadingProfileCard">
@@ -28,7 +33,7 @@
                 </template>
             </v-card>
 
-            <template v-if="loadingQuestions">
+            <template v-if="loadingQuestions || loadingProfileCard">
                 <div class="d-flex align-center justify-center my-12" style="height: 150px">
                     <v-progress-circular :size="100" :width="4" color="tertiary" indeterminate></v-progress-circular>
                 </div>
@@ -93,7 +98,9 @@ export default Vue.extend({
             id: '',
 
             answerSet: { id: uuid(), company: '', contact_person: '', email: '', phone_number: '', notes: '', salary: '', leave: '', remote: 0 } as AnswerSet,
-            answers: [] as Answer[]
+            answers: [] as Answer[],
+
+            errorState: false
         };
     },
     computed: {
@@ -166,14 +173,31 @@ export default Vue.extend({
         '$route.params': {
             handler(): void {
                 // handler
-                this.id = this.$route.params.id;
-                this.answerSet.user_id = this.id;
+                const idOrReference = this.$route.params.id;
 
-                if (this.id) {
-                    this.retrieveInformation();
+                if (idOrReference) {
+                    useProfileStore()
+                        .retrieveProfile(idOrReference)
+                        .then((success) => {
+                            if (!success) {
+                                this.errorState = true;
+                            }
+                        });
                 }
             },
             immediate: true
+        },
+        profile(): void {
+            if (!this.profile) {
+                return;
+            }
+            this.id = this.profile.user_id;
+            this.answerSet.user_id = this.id;
+
+            // profile picture
+            useProfileStore().retrieveProfilePicture(this.id);
+            // questionnaire
+            useQuestionnaireStore().retrieveQuestionnaire(this.id);
         },
         questions(): void {
             this.answers = [];
@@ -181,14 +205,6 @@ export default Vue.extend({
         }
     },
     methods: {
-        retrieveInformation(): void {
-            // profile
-            useProfileStore().retrieveProfile(this.id);
-            // profile picture
-            useProfileStore().retrieveProfilePicture(this.id);
-            // questionnaire
-            useQuestionnaireStore().retrieveQuestionnaire(this.id);
-        },
         submit(): void {
             useAnswerStore().submitAnswers(this.answerSet, this.answers);
         },

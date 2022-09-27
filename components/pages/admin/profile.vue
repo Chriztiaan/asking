@@ -36,6 +36,7 @@
             </div>
 
             <text-field v-model="internalName" :disabled="updating" :loading="retrieving" placeholder="John Smith">Full name</text-field>
+            <text-field v-model="internalReference" :disabled="updating" :loading="retrieving" placeholder="Custom URL for your profile">URL reference</text-field>
             <text-area v-model="internalBio" :disabled="updating" :loading="retrieving" placeholder="Tell us a bit more about yourself...">Bio</text-area>
 
             <v-divider class="" />
@@ -81,6 +82,7 @@ export default Vue.extend({
             mdiCamera,
             file: undefined as File | undefined,
             internalName: '',
+            internalReference: '',
             internalBio: '',
 
             // hackerman
@@ -123,6 +125,13 @@ export default Vue.extend({
                 return p;
             }
             return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6aMSd6UXIgSwBn5c9fvTlZwMjPjeP7vGfnSXXMy68evP4I6USVcPZqq5OYSbxUAtdbEk&usqp=CAU';
+        },
+        reference(): string {
+            if (this.profile && this.profile.reference) {
+                return this.profile.reference;
+            } else {
+                return '';
+            }
         }
     },
     watch: {
@@ -135,6 +144,12 @@ export default Vue.extend({
         bio: {
             handler(): void {
                 this.internalBio = this.bio;
+            },
+            immediate: true
+        },
+        reference: {
+            handler(): void {
+                this.internalReference = this.reference;
             },
             immediate: true
         },
@@ -160,6 +175,7 @@ export default Vue.extend({
             if (this.profile) {
                 const newProfile = structuredClone(this.profile);
                 newProfile.name = this.internalName;
+                newProfile.reference = this.internalReference;
                 newProfile.bio = this.internalBio;
                 useProfileStore().upsertProfile(newProfile);
             }

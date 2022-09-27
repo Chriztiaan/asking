@@ -15,19 +15,28 @@ export const useProfileStore = defineStore('profile', {
     }),
 
     actions: {
-        async retrieveProfile(userId = ''): Promise<void> {
-            const derivedUserId = userId || useAuthStore().userId;
+        async retrieveProfile(userIdOrReference = ''): Promise<boolean> {
+            const derivedUserId = userIdOrReference || useAuthStore().userId;
             this.retrieving = true;
 
-            const { data, error } = await supabase.from('profiles').select().match({ user_id: derivedUserId }).limit(1).single();
+            const { data: referenceData, error: referenceError } = await supabase.from('profiles').select().match({ reference: derivedUserId }).limit(1).single();
+            try {
+                if (!referenceError && !!referenceData) {
+                    this.profile = referenceData;
+                    return true;
+                }
 
-            if (!error && !!data) {
-                this.profile = data;
-            } else {
-                useNotificationStore().addNotification('Failed to retrieve profile.');
+                const { data, error } = await supabase.from('profiles').select().match({ user_id: derivedUserId }).limit(1).single();
+
+                if (!error && !!data) {
+                    this.profile = data;
+                    return true;
+                }
+
+                return false;
+            } finally {
+                this.retrieving = false;
             }
-
-            this.retrieving = false;
         },
         async upsertProfile(profile: Profile): Promise<void> {
             this.updating = true;

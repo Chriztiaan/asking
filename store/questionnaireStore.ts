@@ -55,7 +55,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
                 useNotificationStore().addNotification('Failed to retrieve questions.');
             }
 
-            setTimeout(() => (this.questionsLoading = false), 500);
+            setTimeout(() => (this.questionsLoading = false), 200);
         },
         async upsertQuestionnaire(questionnaire: Questionnaire): Promise<void> {
             this.updating = true;

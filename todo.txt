@@ -1,6 +1,15 @@
 todo
 [x] Order of answers
-[] Try delay in setting loading to false
-
+[x] Try delay in setting loading to false
+[X] Custom reference
+[X] Error state 
 ------
-[] Custom reference
+
+
+[] Auth
+
+[] OAuth
+[] Home page
+[] Different layout for fill
+[] RLS
+[] Cleanup nav buttons
