@@ -1,4 +1,6 @@
 todo
+[x] Order of answers
+[] Try delay in setting loading to false
 
-[] Icons
-[] Delete
+------
+[] Custom reference

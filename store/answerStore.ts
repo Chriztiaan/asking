@@ -23,7 +23,7 @@ export const useAnswerStore = defineStore('answer', {
             this.answerSets = [];
             this.loading = true;
 
-            const { data, error } = await supabase.from('answer_sets').select().match({ user_id: useAuthStore().userId }).limit(50);
+            const { data, error } = await supabase.from('answer_sets').select().match({ user_id: useAuthStore().userId }).order('created_at', { ascending: false }).limit(50);
 
             if (!error && !!data) {
                 this.answerSets = data;
@@ -67,27 +67,6 @@ export const useAnswerStore = defineStore('answer', {
                 useNotificationStore().addNotification('Failed to retrieve questions.');
             }
         },
-        // async upsertAnswer(answer: Answer): Promise<void> {
-        //     this.loading = true;
-
-        //     const { data, error } = await supabase.from('answers').upsert(answer).select().single();
-
-        //     if (!error && !!data) {
-        //         const answersSetEntry = this.answers.find((list) => list.key == data.answer_set_id);
-        //         if (answersSetEntry) {
-        //             const answerEntry = answersSetEntry.answers.find((a) => a.id == data.id);
-        //             if (answerEntry) {
-        //                 Object.assign(answerEntry, data);
-        //             } else {
-        //                 answersSetEntry.answers.push(data);
-        //             }
-        //         }
-        //     } else {
-        //         useNotificationStore().addNotification('Failed to create/update answers.');
-        //     }
-
-        //     this.loading = false;
-        // },
         async deleteAnswerSet(answerSetId: string): Promise<void> {
             const { error } = await supabase.from('answer_sets').delete().match({ id: answerSetId });
 
@@ -101,7 +80,6 @@ export const useAnswerStore = defineStore('answer', {
                 useNotificationStore().addNotification(notificationDeleteFailed);
             }
         },
-
         async submitAnswers(answerSet: AnswerSet, answers: Answer[]): Promise<void> {
             this.answersSubmitting = true;
             const { error: answerSetError } = await supabase.from('answer_sets').insert(answerSet);

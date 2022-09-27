@@ -47,7 +47,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
             this.questions = [];
             this.questionsLoading = true;
 
-            const { data, error } = await supabase.from('questions').select().match({ questionnaire_id: questionnaireId }).limit(50).order('created_at', { ascending: true });
+            const { data, error } = await supabase.from('questions').select().match({ questionnaire_id: questionnaireId }).order('created_at', { ascending: false }).limit(50);
 
             if (!error) {
                 this.questions = data;
@@ -55,7 +55,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
                 useNotificationStore().addNotification('Failed to retrieve questions.');
             }
 
-            this.questionsLoading = false;
+            setTimeout(() => (this.questionsLoading = false), 500);
         },
         async upsertQuestionnaire(questionnaire: Questionnaire): Promise<void> {
             this.updating = true;
