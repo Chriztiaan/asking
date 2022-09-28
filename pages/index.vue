@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" align="center"> Home </v-row>
+    <v-row justify="center" align="center"> index </v-row>
 </template>
 
 <script>

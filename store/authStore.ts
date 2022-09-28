@@ -1,3 +1,4 @@
+import { SignInWithOAuthCredentials } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
 import { supabase } from './setup/supabase';
 
@@ -15,8 +16,16 @@ export const useAuthStore = defineStore('auth', {
         login(): void {
             supabase.auth.signInWithPassword({} as any);
         },
-        loginOAuth(): void {
-            supabase.auth.signInWithOAuth({} as any);
+        async loginGoogle(): Promise<void> {
+            await console.log();
+            await console.log();
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: location.protocol + '//' + location.host + '/admin' }
+            } as SignInWithOAuthCredentials);
+            console.log(data);
+
+            console.log(error);
         },
         logout(): void {
             supabase.auth.signOut();
