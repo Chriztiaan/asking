@@ -8,7 +8,7 @@
                     <v-icon left>mdi-google</v-icon>
                     Continue with Google
                 </v-btn>
-                <v-btn color="#0077b5">
+                <v-btn color="#0077b5" @click="linkedIn">
                     <v-icon size="20" left>mdi-linkedin</v-icon>
                     Continue with Linkedin
                 </v-btn>
@@ -27,6 +27,9 @@ export default Vue.extend({
     methods: {
         google(): void {
             useAuthStore().loginGoogle();
+        },
+        linkedIn(): void {
+            useAuthStore().loginLinkedIn();
         },
         logout(): void {
             useAuthStore().logout();

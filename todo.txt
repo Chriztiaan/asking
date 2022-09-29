@@ -7,6 +7,8 @@ todo
 
 
 [] Auth
+[] Auth user in store
+[] Auth profile picture issue?
 
 [] OAuth
 [] Home page

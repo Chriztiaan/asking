@@ -17,14 +17,19 @@ export const useAuthStore = defineStore('auth', {
             supabase.auth.signInWithPassword({} as any);
         },
         async loginGoogle(): Promise<void> {
-            await console.log();
-            await console.log();
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo: 'https://master--stalwart-kringle-8f06cb.netlify.app/admin/' }
             } as SignInWithOAuthCredentials);
             console.log(data);
-
+            console.log(error);
+        },
+        async loginLinkedIn(): Promise<void> {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'linkedin',
+                options: { redirectTo: 'https://master--stalwart-kringle-8f06cb.netlify.app/admin/' }
+            } as SignInWithOAuthCredentials);
+            console.log(data);
             console.log(error);
         },
         logout(): void {
