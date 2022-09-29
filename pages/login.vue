@@ -1,15 +1,16 @@
 <template>
     <div class="d-flex justify-center">
-        <v-card class="d-flex flex-column py-12 px-8 gap-2" elevation="4" width="600">
-            <header-5>Sign in with</header-5>
-            <div class="d-flex gap-4">
-                <v-btn color="primary" @click="google">
-                    <v-icon size="20" left>mdi-google</v-icon>
-                    Google
+        <v-card class="d-flex flex-column align-center py-12 px-8 gap-6" elevation="4" width="400">
+            <v-img :src="require(`~/assets/leave.svg`)" max-height="75" max-width="75" />
+            <header-4>Welcome</header-4>
+            <div class="d-flex flex-column gap-3">
+                <v-btn color="#DB4437" @click="google">
+                    <v-icon left>mdi-google</v-icon>
+                    Continue with Google
                 </v-btn>
-                <v-btn color="primary">
+                <v-btn color="#0077b5">
                     <v-icon size="20" left>mdi-linkedin</v-icon>
-                    Linkedin
+                    Continue with Linkedin
                 </v-btn>
                 <!-- <v-btn @click="logout">Logout</v-btn> -->
             </div>

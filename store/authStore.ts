@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
             await console.log();
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: location.protocol + '//' + location.host + '/admin' }
+                options: { redirectTo: 'https://master--stalwart-kringle-8f06cb.netlify.app/admin/' }
             } as SignInWithOAuthCredentials);
             console.log(data);
 
