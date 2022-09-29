@@ -7,7 +7,8 @@
                     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
                 </div>
                 <template v-else>
-                    <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" />
+                    <!-- <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" /> -->
+                    <logo style="max-height: 50px; max-width: 50px" />
                 </template>
                 <template v-if="!isMobile || drawer">
                     <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/home"> Home </v-btn>
@@ -36,9 +37,10 @@
 import Vue from 'vue';
 import { mdiWeatherNight, mdiWhiteBalanceSunny, mdiBellOutline, mdiChevronDown } from '@mdi/js';
 import { isMobile } from '@/utils/screen';
-
+import Logo from '@/assets/logo.vue';
 export default Vue.extend({
     name: 'AdminLayout',
+    components: { Logo },
     data() {
         return {
             mdiWeatherNight,

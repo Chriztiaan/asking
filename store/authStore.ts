@@ -1,5 +1,6 @@
 import { SignInWithOAuthCredentials } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
+import { useNotificationStore } from './notificationStore';
 import { supabase } from './setup/supabase';
 
 export const useAuthStore = defineStore('auth', {
@@ -17,20 +18,23 @@ export const useAuthStore = defineStore('auth', {
             supabase.auth.signInWithPassword({} as any);
         },
         async loginGoogle(): Promise<void> {
-            const { data, error } = await supabase.auth.signInWithOAuth({
+            const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo: 'https://master--stalwart-kringle-8f06cb.netlify.app/admin/' }
             } as SignInWithOAuthCredentials);
-            console.log(data);
-            console.log(error);
+            if (error) {
+                useNotificationStore().addNotification('Failed to log in.');
+            }
         },
         async loginLinkedIn(): Promise<void> {
-            const { data, error } = await supabase.auth.signInWithOAuth({
+            const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'linkedin',
                 options: { redirectTo: 'https://master--stalwart-kringle-8f06cb.netlify.app/admin/' }
             } as SignInWithOAuthCredentials);
-            console.log(data);
-            console.log(error);
+
+            if (error) {
+                useNotificationStore().addNotification('Failed to log in.');
+            }
         },
         logout(): void {
             supabase.auth.signOut();

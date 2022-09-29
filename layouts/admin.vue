@@ -3,11 +3,13 @@
         <v-app-bar :app="!isMobile" flat color="app-background" :height="height" :elevation="isMobile ? 1 : 0">
             <div class="px-12 d-flex flex-column justify-center justify-md-start flex-md-row align-center gap-3 py-4" style="width: 100%">
                 <div v-if="isMobile" class="d-flex justify-space-between width-100">
-                    <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" />
+                    <!-- <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" /> -->
+
                     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
                 </div>
                 <template v-else>
-                    <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" />
+                    <!-- <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" /> -->
+                    <!-- <logo /> -->
                 </template>
                 <template v-if="!isMobile || drawer">
                     <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/home"> Home </v-btn>
