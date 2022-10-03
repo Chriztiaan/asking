@@ -105,7 +105,7 @@ export default Vue.extend({
     },
     computed: {
         loadingProfileCard(): boolean {
-            return useProfileStore().loadingProfilePicture || useProfileStore().retrieving;
+            return useProfileStore().loadingQuestionnaireProfilePicture || useProfileStore().retrieving;
         },
         loadingQuestions(): boolean {
             return useQuestionnaireStore().loading || useQuestionnaireStore().questionsLoading;
@@ -128,7 +128,7 @@ export default Vue.extend({
             }
         },
         profilePicture(): string {
-            const p = useProfileStore().profilePicture;
+            const p = useProfileStore().questionnaireProfilePicture;
             if (p) {
                 return p;
             }
@@ -193,9 +193,9 @@ export default Vue.extend({
             }
             this.id = this.profile.user_id;
             this.answerSet.user_id = this.id;
-
+            console.log(this.id);
             // profile picture
-            useProfileStore().retrieveProfilePicture(this.id);
+            useProfileStore().retrieveQuestionnaireProfilePicture(this.id);
             // questionnaire
             useQuestionnaireStore().retrieveQuestionnaire(this.id);
         },

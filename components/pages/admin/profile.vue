@@ -51,19 +51,11 @@
             <header-4>Danger zone</header-4>
             <div class="d-flex justify-space-between align-center">
                 <div class="d-flex flex-column">
-                    <div class="f-16 w-600 warning--text">Reset Password</div>
-                    <div class="f-12 w-500 subtext--text">This will email a link to reset your password.</div>
-                </div>
-
-                <v-btn color="warning" width="150">Reset</v-btn>
-            </div>
-            <div class="d-flex justify-space-between align-center">
-                <div class="d-flex flex-column">
                     <div class="f-16 w-600 warning--text">Delete account</div>
                     <div class="f-12 w-500 subtext--text">This will permanently delete your account.</div>
                 </div>
 
-                <v-btn color="warning" width="150">Delete</v-btn>
+                <v-btn color="warning" width="150" @click="deleteAccount">Delete</v-btn>
             </div>
         </div>
     </div>
@@ -74,6 +66,9 @@ import Vue from 'vue';
 import { mdiPaperclip, mdiCamera } from '@mdi/js';
 import { useProfileStore } from '@/store/profileStore';
 import { Profile } from '@/store/types/DatabaseModels';
+import { useNotificationStore } from '@/store/notificationStore';
+import { useAuthStore } from '@/store/authStore';
+import { supabase } from '@/store/setup/supabase';
 
 export default Vue.extend({
     data() {
@@ -161,7 +156,9 @@ export default Vue.extend({
         }
     },
     mounted() {
-        useProfileStore().retrieveProfile();
+        if (!useProfileStore().retrieveProfile(useAuthStore().userId, true)) {
+            useNotificationStore().addNotification('Failed to retrieve profile.');
+        }
         if (!useProfileStore().profilePicture) {
             useProfileStore().retrieveProfilePicture();
         }
@@ -179,6 +176,10 @@ export default Vue.extend({
                 newProfile.bio = this.internalBio;
                 useProfileStore().upsertProfile(newProfile);
             }
+        },
+        deleteAccount(): void {
+            // todo
+            // useAuthStore().delete();
         }
     }
 });

@@ -23,10 +23,10 @@
                         <v-switch v-model="$vuetify.theme.dark" dense :dark="false" inset hide-details @change="changeDarkMode"></v-switch>
                     </div>
 
-                    <v-btn icon height="24" width="24">
+                    <v-btn icon height="24" width="24" @click="logout">
                         <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
                     </v-btn>
-                    <profile-avatar />
+                    <profile-avatar v-if="userLoaded" />
                     <v-btn icon class="background" height="24" width="24">
                         <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
                     </v-btn>
@@ -35,7 +35,7 @@
         </v-app-bar>
         <v-main class="text--text app-background" :class="{ 'main-mobile': isMobile, 'main-drawer': drawer }">
             <v-main>
-                <v-container> <Nuxt /> </v-container>
+                <v-container v-if="userLoaded"> <Nuxt /> </v-container>
             </v-main>
         </v-main>
         <snackbar />
@@ -46,6 +46,7 @@
 import Vue from 'vue';
 import { mdiWeatherNight, mdiWhiteBalanceSunny, mdiBellOutline, mdiChevronDown } from '@mdi/js';
 import { isMobile } from '@/utils/screen';
+import { useAuthStore } from '@/store/authStore';
 
 export default Vue.extend({
     name: 'AdminLayout',
@@ -59,6 +60,9 @@ export default Vue.extend({
         };
     },
     computed: {
+        userLoaded(): boolean {
+            return useAuthStore().loaded;
+        },
         isMobile(): boolean {
             return isMobile(this.$vuetify);
         },
@@ -73,9 +77,15 @@ export default Vue.extend({
             }
         }
     },
+    mounted() {
+        useAuthStore().loadUser();
+    },
     methods: {
         changeDarkMode(): void {
             localStorage.setItem('dark-mode', this.$vuetify.theme.dark + '');
+        },
+        logout(): void {
+            useAuthStore().logout();
         }
     }
 });

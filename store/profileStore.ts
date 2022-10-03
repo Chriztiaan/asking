@@ -11,19 +11,24 @@ export const useProfileStore = defineStore('profile', {
         updating: false,
         profilePicture: '',
         loadingProfilePicture: false,
-        updatingProfilePicture: false
+        updatingProfilePicture: false,
+
+        questionnaireProfilePicture: '',
+        loadingQuestionnaireProfilePicture: false
     }),
 
     actions: {
-        async retrieveProfile(userIdOrReference = ''): Promise<boolean> {
+        async retrieveProfile(userIdOrReference = '', useUserId = false): Promise<boolean> {
             const derivedUserId = userIdOrReference || useAuthStore().userId;
             this.retrieving = true;
 
-            const { data: referenceData, error: referenceError } = await supabase.from('profiles').select().match({ reference: derivedUserId }).limit(1).single();
             try {
-                if (!referenceError && !!referenceData) {
-                    this.profile = referenceData;
-                    return true;
+                if (!useUserId) {
+                    const { data: referenceData, error: referenceError } = await supabase.from('profiles').select().match({ reference: derivedUserId }).limit(1).single();
+                    if (!referenceError && !!referenceData) {
+                        this.profile = referenceData;
+                        return true;
+                    }
                 }
 
                 const { data, error } = await supabase.from('profiles').select().match({ user_id: derivedUserId }).limit(1).single();
@@ -58,13 +63,19 @@ export const useProfileStore = defineStore('profile', {
             this.profilePicture = '';
 
             const derivedUserId = useAuthStore().userId;
-            const { error } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
+            const { error, data } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
                 cacheControl: '3600',
                 upsert: true
             });
-
+            console.log('profile');
+            console.log(data);
             if (!error) {
                 useNotificationStore().addNotification(notificationUploadProfilePicture);
+                const newProfile = structuredClone(this.profile);
+                if (newProfile) {
+                    newProfile.profile = '';
+                    await useProfileStore().upsertProfile(newProfile);
+                }
             } else {
                 useNotificationStore().addNotification('Failed to update profile picture');
                 console.error(error);
@@ -73,6 +84,10 @@ export const useProfileStore = defineStore('profile', {
             this.updatingProfilePicture = false;
         },
         async retrieveProfilePicture(userId = ''): Promise<void> {
+            if (this.profile && this.profile.profile) {
+                this.profilePicture = this.profile.profile;
+                return;
+            }
             this.loadingProfilePicture = true;
             const derivedUserId = userId || useAuthStore().userId;
 
@@ -86,6 +101,21 @@ export const useProfileStore = defineStore('profile', {
             }
 
             this.loadingProfilePicture = false;
+        },
+        async retrieveQuestionnaireProfilePicture(userId = ''): Promise<void> {
+            this.loadingQuestionnaireProfilePicture = true;
+            const derivedUserId = userId || useAuthStore().userId;
+
+            const { data, error } = await supabase.storage.from('avatars').createSignedUrl('public/' + derivedUserId, 600000);
+
+            if (!error && data.signedUrl) {
+                this.questionnaireProfilePicture = data.signedUrl;
+            } else {
+                this.questionnaireProfilePicture = '';
+                useNotificationStore().addNotification('Failed to retrieve profile picture.');
+            }
+
+            this.loadingQuestionnaireProfilePicture = false;
         }
     }
 });

@@ -5,10 +5,15 @@ todo
 [X] Error state 
 ------
 
+[] Test delete
+[] Fresh logins
+[] Empty states
 
 [] Auth
 [] Auth user in store
-[] Auth profile picture issue?
+[] Initial, Oauth into profile
+[] Handle scenario where user has no profile id yet
+-- Put Google/Linkedin profile in
 
 [] OAuth
 [] Home page
