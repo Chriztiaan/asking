@@ -179,7 +179,7 @@ export default Vue.extend({
         },
         deleteAccount(): void {
             // todo
-            // useAuthStore().delete();
+            useAuthStore().delete();
         }
     }
 });

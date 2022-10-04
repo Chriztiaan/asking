@@ -78,6 +78,7 @@ export default Vue.extend({
         }
     },
     mounted() {
+        useAuthStore().router = this.$router;
         useAuthStore().loadUser();
     },
     methods: {

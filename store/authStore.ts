@@ -4,12 +4,13 @@ import { useNotificationStore } from './notificationStore';
 import { useProfileStore } from './profileStore';
 import { supabase } from './setup/supabase';
 import { Profile, Questionnaire } from './types/DatabaseModels';
-
+const url = location.protocol + '//' + location.host + '/admin/';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         loggedIn: false,
         userId: '',
-        loaded: false
+        loaded: false,
+        router: undefined as unknown
     }),
 
     getters: {
@@ -24,22 +25,18 @@ export const useAuthStore = defineStore('auth', {
             if (this.userId) {
                 return;
             }
+
             const { data, error } = await supabase.auth.getUser();
             if (!error && data) {
-                console.log('ads');
                 this.userId = data.user.id;
                 const exists = await useProfileStore().retrieveProfile(this.userId, true);
                 if (!exists || !useProfileStore().profile?.name) {
-                    console.log('MISSING');
                     const { data, error } = await supabase.auth.getSession();
                     if (!error && data) {
-                        // data.session.
-                        console.log(data.session?.user.user_metadata);
                         const fullname = data.session?.user.user_metadata.full_name || '';
                         const profileUrl = data.session?.user.user_metadata.avatar_url || '';
 
-                        useProfileStore().upsertProfile({ name: fullname, user_id: this.userId, profile: profileUrl } as Profile);
-                        // avatar_url
+                        await useProfileStore().upsertProfile({ name: fullname, user_id: this.userId, profile: profileUrl } as Profile, true);
                     }
                 }
             }
@@ -49,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
         async loginGoogle(): Promise<void> {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: 'http://localhost:3000/admin/' }
+                options: { redirectTo: url }
             } as SignInWithOAuthCredentials);
             if (error) {
                 useNotificationStore().addNotification('Failed to log in.');
@@ -58,8 +55,8 @@ export const useAuthStore = defineStore('auth', {
         async loginLinkedIn(): Promise<void> {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'linkedin',
-                // https://master--stalwart-kringle-8f06cb.netlify.app/admin/
-                options: { redirectTo: 'http://localhost:3000/admin/' }
+
+                options: { redirectTo: url }
             } as SignInWithOAuthCredentials);
 
             if (error) {
@@ -70,22 +67,19 @@ export const useAuthStore = defineStore('auth', {
             supabase.auth.signOut();
             this.loggedIn = false;
             this.loaded = false;
+            (this.router as any).push('/login');
         },
-        onAuthChange(): void {
-            supabase.auth.onAuthStateChange((event, session) => {
-                if (event == 'USER_DELETED' || event == 'SIGNED_OUT') {
-                    this.logout();
-                    console.log('Auto logout', session);
-                }
-            });
-        },
+
         async delete(): Promise<void> {
             await supabase
                 .from('questionnaires')
                 .delete()
                 .match({ user_id: this.userId } as Questionnaire);
+
             supabase.rpc('deleteUser' as never).then((a) => {
-                console.log(a);
+                if (!a.error) {
+                    this.logout();
+                }
             });
         }
     }

@@ -43,15 +43,17 @@ export const useProfileStore = defineStore('profile', {
                 this.retrieving = false;
             }
         },
-        async upsertProfile(profile: Profile): Promise<void> {
+        async upsertProfile(profile: Profile, silent = false): Promise<void> {
             this.updating = true;
 
             const { data, error } = await supabase.from('profiles').upsert(profile).select().single();
 
             if (!error && !!data) {
                 this.profile = data;
-                useNotificationStore().addNotification(notificationSaved);
-            } else {
+                if (!silent) {
+                    useNotificationStore().addNotification(notificationSaved);
+                }
+            } else if (!silent) {
                 useNotificationStore().addNotification(notificationFailedSaved);
             }
 
@@ -63,12 +65,11 @@ export const useProfileStore = defineStore('profile', {
             this.profilePicture = '';
 
             const derivedUserId = useAuthStore().userId;
-            const { error, data } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
+            const { error } = await supabase.storage.from('avatars').upload('public/' + derivedUserId, file, {
                 cacheControl: '3600',
                 upsert: true
             });
-            console.log('profile');
-            console.log(data);
+
             if (!error) {
                 useNotificationStore().addNotification(notificationUploadProfilePicture);
                 const newProfile = structuredClone(this.profile);
