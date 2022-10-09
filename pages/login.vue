@@ -5,11 +5,11 @@
             <!-- <header-4>Welcome</header-4> -->
             <div class="d-flex flex-column gap-3">
                 <v-btn color="#DB4437" class="white--text" @click="google">
-                    <v-icon left>mdi-google</v-icon>
+                    <v-icon left>{{ mdiGoogle }}</v-icon>
                     Continue with Google
                 </v-btn>
                 <v-btn color="#0077b5" class="white--text" @click="linkedIn">
-                    <v-icon size="20" left>mdi-linkedin</v-icon>
+                    <v-icon size="20" left>{{ mdiLinkedin }}</v-icon>
                     Continue with Linkedin
                 </v-btn>
                 <!-- <v-btn @click="logout">Logout</v-btn> -->
@@ -20,11 +20,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mdiLinkedin, mdiGoogle } from '@mdi/js';
 import { useAuthStore } from '@/store/authStore';
 import LogoText from '@/assets/logoText.vue';
+
 export default Vue.extend({
     components: { LogoText },
-    layout: 'default',
+    layout: 'admin',
+    data() {
+        return {
+            mdiGoogle,
+            mdiLinkedin
+        };
+    },
     methods: {
         google(): void {
             useAuthStore().loginGoogle();

@@ -23,19 +23,33 @@
                         <v-switch v-model="$vuetify.theme.dark" dense :dark="false" inset hide-details @change="changeDarkMode"></v-switch>
                     </div>
 
-                    <v-btn icon height="24" width="24" @click="logout">
+                    <v-btn v-if="false" icon height="24" width="24">
                         <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
                     </v-btn>
-                    <profile-avatar v-if="userLoaded" />
-                    <v-btn icon class="background" height="24" width="24">
-                        <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
-                    </v-btn>
+
+                    <profile-avatar v-if="hasUser" />
+
+                    <v-menu v-if="hasUser" offset-y>
+                        <template #activator="{ on }">
+                            <!-- <v-btn color="primary" dark v-bind="attrs" v-on="on"> Dropdown </v-btn> -->
+                            <v-btn icon height="24" width="24" v-on="on">
+                                <v-btn icon class="background" height="24" width="24">
+                                    <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
+                                </v-btn>
+                            </v-btn>
+                        </template>
+                        <v-list width="200">
+                            <v-list-item @click="logout">
+                                <v-list-item-title>Logout</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
                 </div>
             </div>
         </v-app-bar>
         <v-main class="text--text app-background" :class="{ 'main-mobile': isMobile, 'main-drawer': drawer }">
             <v-main>
-                <v-container v-if="userLoaded"> <Nuxt /> </v-container>
+                <v-container> <Nuxt /> </v-container>
             </v-main>
         </v-main>
         <snackbar />
@@ -62,6 +76,9 @@ export default Vue.extend({
     computed: {
         userLoaded(): boolean {
             return useAuthStore().loaded;
+        },
+        hasUser(): boolean {
+            return this.userLoaded && !!useAuthStore().userId;
         },
         isMobile(): boolean {
             return isMobile(this.$vuetify);

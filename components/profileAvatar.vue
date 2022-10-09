@@ -4,7 +4,9 @@
             <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
                 <v-progress-circular :size="50" :width="4" color="tertiary" indeterminate></v-progress-circular>
             </div>
-            <v-img v-else :src="profilePicture"></v-img>
+            <v-img v-else :src="profilePicture" referrerpolicy="no-referrer"></v-img>
+            <!-- Hack -->
+            <img v-show="false" :src="profilePicture" referrerpolicy="no-referrer" />
         </v-avatar>
     </v-badge>
 </template>

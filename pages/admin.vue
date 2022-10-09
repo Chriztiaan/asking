@@ -17,7 +17,10 @@
                         Profile
                     </v-btn>
 
-                    <link-btn :icon="mdiShareVariant" width="150" max-width="180" class="pl-6" @click="copyShareLink">Share questions</link-btn>
+                    <div class="d-flex flex-column">
+                        <link-btn :icon="mdiShareVariant" width="150" max-width="180" class="pl-6" @click="copyShareLink">Share questions</link-btn>
+                        <link-btn :icon="mdiTab" width="150" max-width="180" class="pl-6" @click="preview">Preview</link-btn>
+                    </div>
                 </div>
             </v-col>
             <v-col class="d-flex justify-center justify-md-start" cols="12" md="6">
@@ -33,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mdiClipboardText, mdiFormatListText, mdiAccountCircle, mdiShareVariant } from '@mdi/js';
+import { mdiClipboardText, mdiFormatListText, mdiAccountCircle, mdiShareVariant, mdiTab } from '@mdi/js';
 import answers from '@/components/pages/admin/answers.vue';
 import { useProfileStore } from '@/store/profileStore';
 import { urlBase } from '@/store/authStore';
@@ -55,6 +58,7 @@ export default Vue.extend({
             mdiFormatListText,
             mdiAccountCircle,
             mdiShareVariant,
+            mdiTab,
 
             bool: true,
             selectedPage: Page.questions,
@@ -98,6 +102,9 @@ export default Vue.extend({
         copyShareLink(): void {
             navigator.clipboard.writeText(this.shareLink);
             useNotificationStore().addNotification('Share link copied to clipboard.');
+        },
+        preview(): void {
+            window.open(this.shareLink, '_blank');
         }
     }
 });

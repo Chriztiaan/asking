@@ -6,6 +6,11 @@
             <template v-if="loading">
                 <v-skeleton-loader v-for="j in 3" :key="j" class="v-sheet v-card elevation-4" type="image" />
             </template>
+            <div v-else-if="noAnswerSets" class="d-flex flex-column align-center">
+                <v-icon class="mb-6 mt-6" size="100" color="tertiary">{{ mdiFormatListText }}</v-icon>
+                <header-2 class="wfc">No answers sets yet</header-2>
+                <header-5 class="subtext--text">Share your questions with someone!</header-5>
+            </div>
 
             <v-card v-for="(answerSet, i) in answerSets" v-else :key="answerSet.id" elevation="4" class="pa-5 d-flex flex-column gap-4">
                 <div class="d-flex justify-space-between align-center">
@@ -128,7 +133,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { subDays, format, formatDistance } from 'date-fns';
-import { mdiHome, mdiHomeCity, mdiHomeOff, mdiMenu, mdiCreditCardOutline, mdiContentCopy, mdiCalendar, mdiTrashCan } from '@mdi/js';
+import { mdiHome, mdiHomeCity, mdiHomeOff, mdiMenu, mdiCreditCardOutline, mdiContentCopy, mdiCalendar, mdiTrashCan, mdiFormatListText } from '@mdi/js';
 import answersCard from './answers/answersCard.vue';
 import { useAnswerStore } from '@/store/answerStore';
 import { AnswerSet } from '@/store/types/DatabaseModels';
@@ -147,6 +152,7 @@ export default Vue.extend({
             mdiTrashCan,
             mdiCreditCardOutline,
             mdiContentCopy,
+            mdiFormatListText,
 
             viewEntry: undefined as number | undefined
         };
@@ -160,6 +166,9 @@ export default Vue.extend({
         },
         isMobile(): boolean {
             return isMobile(this.$vuetify);
+        },
+        noAnswerSets(): boolean {
+            return this.answerSets.length == 0;
         }
     },
     mounted() {

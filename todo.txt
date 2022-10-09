@@ -10,12 +10,15 @@ todo
 [x] Sharing (ideas)
 --------------
 
-[] Empty state inspo
-[] Empty states
+[X] Empty state inspo
+[X] Empty states
+[X] logout button
 
+-------------
+[] Breakout to questionnaire profile
+[] Some default questions
 [] Handle unauthed state, go to login/home
 [] Home page
-[] Different layout for fill? (Use same and use an "authed" component)
 [] RLS
 [] Cleanup nav buttons
 [] Oauth logo?

@@ -82,6 +82,9 @@ export default Vue.extend({
         },
         questions(): Question[] {
             return useQuestionnaireStore().questions;
+        },
+        userId(): string {
+            return useAuthStore().userId;
         }
     },
     watch: {
@@ -96,11 +99,17 @@ export default Vue.extend({
                 this.resetQuestionnaire();
             },
             immediate: true
+        },
+        userId: {
+            handler(): void {
+                if (this.userId) {
+                    useQuestionnaireStore().retrieveQuestionnaire();
+                }
+            },
+            immediate: true
         }
     },
-    mounted() {
-        useQuestionnaireStore().retrieveQuestionnaire();
-    },
+
     methods: {
         resetQuestionnaire(): void {
             if (this.questionnaire) {
