@@ -193,7 +193,7 @@ export default Vue.extend({
             }
             this.id = this.profile.user_id;
             this.answerSet.user_id = this.id;
-            console.log(this.id);
+
             // profile picture
             useProfileStore().retrieveQuestionnaireProfilePicture(this.id);
             // questionnaire

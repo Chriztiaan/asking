@@ -9,8 +9,8 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        titleTemplate: '%s - Tell me first',
-        title: 'tellmefirst',
+        titleTemplate: '%s',
+        title: 'Pallet',
         htmlAttrs: {
             lang: 'en'
         },

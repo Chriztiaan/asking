@@ -4,6 +4,7 @@
             <v-col cols="12" md="2" class="d-flex flex-column align-center align-md-start">
                 <header-1 :class="{ 'ml-4': !isMobile }">Manage</header-1>
                 <div class="mt-4 d-flex flex-column align-center align-md-start gap-3 manage-btns">
+                    {{ shareLink }}
                     <v-btn text width="180" :class="{ selected: isQuestions }" class="f-18 w-500" @click="setPage(Page.questions)">
                         <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiClipboardText }}</v-icon>
                         Questions
@@ -16,6 +17,8 @@
                         <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiAccountCircle }}</v-icon>
                         Profile
                     </v-btn>
+
+                    <link-btn :icon="mdiShareVariant" width="150" max-width="180" class="pl-6" @click="copyShareLink">Share questions</link-btn>
                 </div>
             </v-col>
             <v-col class="d-flex justify-center justify-md-start" cols="12" md="6">
@@ -31,8 +34,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mdiClipboardText, mdiFormatListText, mdiAccountCircle } from '@mdi/js';
+import { mdiClipboardText, mdiFormatListText, mdiAccountCircle, mdiShareVariant } from '@mdi/js';
 import answers from '@/components/pages/admin/answers.vue';
+import { useProfileStore } from '@/store/profileStore';
+import { urlBase } from '@/store/authStore';
+import { notificationCopiedClipboard, useNotificationStore } from '@/store/notificationStore';
 
 enum Page {
     dashboard,
@@ -49,6 +55,8 @@ export default Vue.extend({
             mdiClipboardText,
             mdiFormatListText,
             mdiAccountCircle,
+            mdiShareVariant,
+
             bool: true,
             selectedPage: Page.questions,
             Page
@@ -70,11 +78,27 @@ export default Vue.extend({
         isMobile(): boolean {
             const name = this.$vuetify.breakpoint.name;
             return name == 'xs' || name == 'sm';
+        },
+        shareLink(): string {
+            const url = urlBase;
+            let refOrId = '';
+            const profile = useProfileStore().profile;
+            if (profile) {
+                refOrId = profile.reference ? profile.reference : profile.user_id;
+
+                return url + '/fill/' + refOrId;
+            }
+
+            return '';
         }
     },
     methods: {
         setPage(page: Page): void {
             this.selectedPage = page;
+        },
+        copyShareLink(): void {
+            navigator.clipboard.writeText(this.shareLink);
+            useNotificationStore().addNotification('Share link copied to clipboard.');
         }
     }
 });

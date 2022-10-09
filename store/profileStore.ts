@@ -45,7 +45,9 @@ export const useProfileStore = defineStore('profile', {
         },
         async upsertProfile(profile: Profile, silent = false): Promise<void> {
             this.updating = true;
-
+            if (!profile.reference) {
+                profile.reference = null;
+            }
             const { data, error } = await supabase.from('profiles').upsert(profile).select().single();
 
             if (!error && !!data) {

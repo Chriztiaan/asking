@@ -31,10 +31,7 @@
                 </div>
             </template>
 
-            <v-btn v-ripple="false" class="pl-0" text plain width="220" :disabled="retrieving || updating" @click="addQuestion">
-                <v-icon left class="primary--text">{{ mdiPlusCircleOutline }}</v-icon>
-                <div class="link-btn" :class="retrieving || updating ? 'disabled--text' : 'primary--text'">Add another question</div>
-            </v-btn>
+            <link-btn :disabled="retrieving || updating" :icon="mdiPlusCircleOutline" @click="addQuestion">Add another question</link-btn>
 
             <v-divider></v-divider>
             <div class="d-flex justify-end gap-4">

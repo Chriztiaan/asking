@@ -48,7 +48,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
             this.questions = [];
             this.questionsLoading = true;
 
-            const { data, error } = await supabase.from('questions').select().match({ questionnaire_id: questionnaireId }).order('created_at', { ascending: false }).limit(50);
+            const { data, error } = await supabase.from('questions').select().match({ questionnaire_id: questionnaireId }).order('created_at', { ascending: true }).limit(50);
 
             if (!error) {
                 this.questions = data;

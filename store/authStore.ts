@@ -4,7 +4,10 @@ import { useNotificationStore } from './notificationStore';
 import { useProfileStore } from './profileStore';
 import { supabase } from './setup/supabase';
 import { Profile, Questionnaire } from './types/DatabaseModels';
-const url = location.protocol + '//' + location.host + '/admin/';
+
+export const urlBase = location.protocol + '//' + location.host;
+export const urlAdmin = urlBase + '/admin/';
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         loggedIn: false,
@@ -35,8 +38,9 @@ export const useAuthStore = defineStore('auth', {
                     if (!error && data) {
                         const fullname = data.session?.user.user_metadata.full_name || '';
                         const profileUrl = data.session?.user.user_metadata.avatar_url || '';
+                        const newProfile = { name: fullname, user_id: this.userId, profile: profileUrl } as Profile;
 
-                        await useProfileStore().upsertProfile({ name: fullname, user_id: this.userId, profile: profileUrl } as Profile, true);
+                        await useProfileStore().upsertProfile(newProfile, true);
                     }
                 }
             }
@@ -46,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
         async loginGoogle(): Promise<void> {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: url }
+                options: { redirectTo: urlAdmin }
             } as SignInWithOAuthCredentials);
             if (error) {
                 useNotificationStore().addNotification('Failed to log in.');
@@ -56,7 +60,7 @@ export const useAuthStore = defineStore('auth', {
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'linkedin',
 
-                options: { redirectTo: url }
+                options: { redirectTo: urlAdmin }
             } as SignInWithOAuthCredentials);
 
             if (error) {

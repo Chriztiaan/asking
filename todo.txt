@@ -5,18 +5,18 @@ todo
 [X] Error state 
 ------
 
-[] Test delete
-[] Fresh logins
+[x] Test delete
+[X] Tab name
+[x] Sharing (ideas)
+--------------
+
+[] Empty state inspo
 [] Empty states
 
-[] Auth
-[] Auth user in store
-[] Initial, Oauth into profile
-[] Handle scenario where user has no profile id yet
--- Put Google/Linkedin profile in
-
-[] OAuth
+[] Handle unauthed state, go to login/home
 [] Home page
-[] Different layout for fill
+[] Different layout for fill? (Use same and use an "authed" component)
 [] RLS
 [] Cleanup nav buttons
+[] Oauth logo?
+[] Tabletish size
