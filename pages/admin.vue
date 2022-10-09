@@ -4,7 +4,6 @@
             <v-col cols="12" md="2" class="d-flex flex-column align-center align-md-start">
                 <header-1 :class="{ 'ml-4': !isMobile }">Manage</header-1>
                 <div class="mt-4 d-flex flex-column align-center align-md-start gap-3 manage-btns">
-                    {{ shareLink }}
                     <v-btn text width="180" :class="{ selected: isQuestions }" class="f-18 w-500" @click="setPage(Page.questions)">
                         <v-icon class="mr-4" color="tertiary" left size="24">{{ mdiClipboardText }}</v-icon>
                         Questions
@@ -38,7 +37,7 @@ import { mdiClipboardText, mdiFormatListText, mdiAccountCircle, mdiShareVariant 
 import answers from '@/components/pages/admin/answers.vue';
 import { useProfileStore } from '@/store/profileStore';
 import { urlBase } from '@/store/authStore';
-import { notificationCopiedClipboard, useNotificationStore } from '@/store/notificationStore';
+import { useNotificationStore } from '@/store/notificationStore';
 
 enum Page {
     dashboard,
