@@ -1,22 +1,49 @@
 <template>
     <v-app>
-        <v-app-bar :app="!isMobile" flat color="app-background" :height="height" :elevation="isMobile ? 1 : 0">
-            <div class="px-12 d-flex flex-column justify-center justify-md-start flex-md-row align-center gap-3 py-4" style="width: 100%">
+        <v-app-bar :app="!isMobile" flat color="app-background" :max-height="height" :height="height" :elevation="isMobile ? 1 : 0">
+            <div
+                :class="{ 'px-12': !isMobile, 'px-2': isMobile }"
+                class="d-flex flex-column justify-center justify-md-start flex-md-row align-center gap-3 py-4"
+                style="width: 100%"
+            >
                 <div v-if="isMobile" class="d-flex justify-space-between width-100">
-                    <!-- <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" /> -->
+                    <div class="d-flex gap-4">
+                        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                        <logo style="max-height: 50px; max-width: 50px" />
+                    </div>
+                    <div class="d-flex gap-3 align-center">
+                        <div class="d-flex align-center gap-2">
+                            <v-icon v-if="$vuetify.theme.dark">{{ mdiWeatherNight }}</v-icon>
+                            <v-icon v-else>{{ mdiWhiteBalanceSunny }}</v-icon>
+                            <v-switch v-model="$vuetify.theme.dark" dense :dark="false" inset hide-details @change="changeDarkMode"></v-switch>
+                        </div>
 
-                    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                        <v-btn v-if="false" icon height="24" width="24">
+                            <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
+                        </v-btn>
+
+                        <v-menu v-if="hasUser" offset-y>
+                            <template #activator="{ on }">
+                                <profile-avatar v-if="hasUser" v-on="on" />
+                            </template>
+                            <v-list width="200">
+                                <v-list-item @click="logout">
+                                    <v-list-item-title>Logout</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </div>
                 </div>
                 <template v-else>
-                    <!-- <v-img :src="require(`~/assets/leave.svg`)" max-height="50" max-width="50" /> -->
-                    <!-- <logo /> -->
+                    <logo style="max-height: 50px; max-width: 50px" />
                 </template>
                 <template v-if="!isMobile || drawer">
-                    <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/home"> Home </v-btn>
-                    <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/design"> Manage </v-btn>
+                    <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/" nuxt> Home </v-btn>
+                    <v-btn v-if="hasUser" class="f-18 w-700" :outlined="isMobile" width="100" text to="/admin" nuxt :link="true"> Manage </v-btn>
+                    <v-btn v-else class="f-18 w-700" :outlined="isMobile" width="100" text to="/login" nuxt :link="true"> Login </v-btn>
                     <v-spacer />
                 </template>
-                <div class="d-flex gap-3 align-center">
+                <div v-if="!isMobile" class="d-flex gap-3 align-center">
                     <div class="d-flex align-center gap-2">
                         <v-icon v-if="$vuetify.theme.dark">{{ mdiWeatherNight }}</v-icon>
                         <v-icon v-else>{{ mdiWhiteBalanceSunny }}</v-icon>
@@ -27,16 +54,9 @@
                         <v-icon color="text" size="20">{{ mdiBellOutline }}</v-icon>
                     </v-btn>
 
-                    <profile-avatar v-if="hasUser" />
-
                     <v-menu v-if="hasUser" offset-y>
                         <template #activator="{ on }">
-                            <!-- <v-btn color="primary" dark v-bind="attrs" v-on="on"> Dropdown </v-btn> -->
-                            <v-btn icon height="24" width="24" v-on="on">
-                                <v-btn icon class="background" height="24" width="24">
-                                    <v-icon color="black" size="20">{{ mdiChevronDown }}</v-icon>
-                                </v-btn>
-                            </v-btn>
+                            <profile-avatar v-if="hasUser" v-on="on" />
                         </template>
                         <v-list width="200">
                             <v-list-item @click="logout">
@@ -58,18 +78,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mdiWeatherNight, mdiWhiteBalanceSunny, mdiBellOutline, mdiChevronDown } from '@mdi/js';
+import { mdiWeatherNight, mdiWhiteBalanceSunny, mdiBellOutline } from '@mdi/js';
 import { isMobile } from '@/utils/screen';
 import { useAuthStore } from '@/store/authStore';
+import Logo from '@/assets/logo.vue';
 
 export default Vue.extend({
     name: 'AdminLayout',
+    components: { Logo },
     data() {
         return {
             mdiWeatherNight,
             mdiWhiteBalanceSunny,
             mdiBellOutline,
-            mdiChevronDown,
             drawer: false
         };
     },
@@ -84,14 +105,25 @@ export default Vue.extend({
             return isMobile(this.$vuetify);
         },
         height(): number {
-            if (this.drawer) {
-                return 275;
-            }
             if (this.isMobile) {
-                return 160;
+                if (this.drawer) {
+                    return 192;
+                }
+                return 76;
             } else {
                 return 80;
             }
+        }
+    },
+    watch: {
+        userLoaded(): void {
+            this.guard();
+        },
+        '$router.currentRoute': {
+            handler(): void {
+                this.guard();
+            },
+            immediate: true
         }
     },
     mounted() {
@@ -99,6 +131,25 @@ export default Vue.extend({
         useAuthStore().loadUser();
     },
     methods: {
+        guard(): void {
+            const route = this.$router.currentRoute.name;
+            const authed = this.userLoaded && this.hasUser;
+
+            if (!this.userLoaded) {
+                return;
+            }
+            if (route == 'index') {
+                return;
+            }
+
+            if (route == 'login' && authed) {
+                this.$router.push('/admin');
+            }
+
+            if (route == 'admin' && !authed) {
+                this.$router.push('/login');
+            }
+        },
         changeDarkMode(): void {
             localStorage.setItem('dark-mode', this.$vuetify.theme.dark + '');
         },
@@ -115,6 +166,10 @@ export default Vue.extend({
     padding-top: 0px !important;
 }
 .main-drawer {
-    margin-top: 170px !important;
+    margin-top: 0px !important;
+}
+
+.v-btn--active::before {
+    opacity: 0 !important;
 }
 </style>

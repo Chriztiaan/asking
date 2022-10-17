@@ -13,13 +13,18 @@ todo
 [X] Empty state inspo
 [X] Empty states
 [X] logout button
+[X] Handle unauthed state, go to login/home
+[X] Add confirmation to delete acc thing
+[X] Default title
+[X] Home page
 
 -------------
-[] Breakout to questionnaire profile
-[] Some default questions
-[] Handle unauthed state, go to login/home
-[] Home page
+
+[] Some default questions (Ask People)
+
+
 [] RLS
-[] Cleanup nav buttons
+
 [] Oauth logo?
-[] Tabletish size
+
+

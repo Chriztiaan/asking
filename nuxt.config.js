@@ -82,7 +82,9 @@ export default {
                     text: '#28262C',
                     subtext: '#a39eb6',
                     warning: 'FF6049',
-                    info: '#B2C7EF'
+                    info: '#B2C7EF',
+
+                    header: '#8478bb'
                 },
                 dark: {
                     primary: '#8478bb',
@@ -98,7 +100,9 @@ export default {
                     text: '#FFFFFF',
                     subtext: '#c5c2d1',
                     warning: 'FF6049',
-                    info: '#B2C7EF'
+                    info: '#B2C7EF',
+
+                    header: '#c5adfb'
                 }
             },
             options: { customProperties: true } // this line

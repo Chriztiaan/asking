@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-center">
-        <v-card class="d-flex flex-column align-center py-12 px-8 gap-6" elevation="4" width="400">
+        <v-card class="d-flex flex-column align-center py-12 px-8 gap-6" outlined elevation="4" width="400">
             <logo-text style="max-height: 75px; max-width: 75px" />
             <!-- <header-4>Welcome</header-4> -->
             <div class="d-flex flex-column gap-3">

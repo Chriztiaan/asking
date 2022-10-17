@@ -111,7 +111,7 @@ export default Vue.extend({
             return useQuestionnaireStore().loading || useQuestionnaireStore().questionsLoading;
         },
         profile(): Profile | undefined {
-            return useProfileStore().profile;
+            return useProfileStore().questionnaireProfile;
         },
         name(): string {
             if (this.profile && this.profile.name) {
@@ -128,7 +128,7 @@ export default Vue.extend({
             }
         },
         profilePicture(): string {
-            const p = useProfileStore().questionnaireProfilePicture;
+            const p = useProfileStore().questionnaireProfilePicture || this.profile?.profile;
             if (p) {
                 return p;
             }
@@ -177,7 +177,7 @@ export default Vue.extend({
 
                 if (idOrReference) {
                     useProfileStore()
-                        .retrieveProfile(idOrReference)
+                        .retrieveQuestionnaireProfile(idOrReference)
                         .then((success) => {
                             if (!success) {
                                 this.errorState = true;

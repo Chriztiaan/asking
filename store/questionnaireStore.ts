@@ -24,7 +24,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
 
             // Profile doesn't exist yet
             if (error && error.code == 'PGRST116' && derivedUserId == useAuthStore().userId) {
-                const questionnaire = { user_id: derivedUserId } as Questionnaire;
+                const questionnaire = { user_id: derivedUserId, title: "I'd like to know the following" } as Questionnaire;
                 await this.upsertQuestionnaire(questionnaire);
                 if (!this.questionnaire) {
                     useNotificationStore().addNotification('Failed to setup questionnaire.');

@@ -7,6 +7,7 @@ import { Profile } from './types/DatabaseModels';
 export const useProfileStore = defineStore('profile', {
     state: () => ({
         profile: undefined as Profile | undefined,
+        questionnaireProfile: undefined as Profile | undefined,
         retrieving: false,
         updating: false,
         profilePicture: '',
@@ -35,6 +36,31 @@ export const useProfileStore = defineStore('profile', {
 
                 if (!error && !!data) {
                     this.profile = data;
+                    return true;
+                }
+
+                return false;
+            } finally {
+                this.retrieving = false;
+            }
+        },
+        async retrieveQuestionnaireProfile(userIdOrReference = '', useUserId = false): Promise<boolean> {
+            const derivedUserId = userIdOrReference || useAuthStore().userId;
+            this.retrieving = true;
+
+            try {
+                if (!useUserId) {
+                    const { data: referenceData, error: referenceError } = await supabase.from('profiles').select().match({ reference: derivedUserId }).limit(1).single();
+                    if (!referenceError && !!referenceData) {
+                        this.questionnaireProfile = referenceData;
+                        return true;
+                    }
+                }
+
+                const { data, error } = await supabase.from('profiles').select().match({ user_id: derivedUserId }).limit(1).single();
+
+                if (!error && !!data) {
+                    this.questionnaireProfile = data;
                     return true;
                 }
 
@@ -115,7 +141,9 @@ export const useProfileStore = defineStore('profile', {
                 this.questionnaireProfilePicture = data.signedUrl;
             } else {
                 this.questionnaireProfilePicture = '';
-                useNotificationStore().addNotification('Failed to retrieve profile picture.');
+                if (!this.questionnaireProfile?.profile) {
+                    useNotificationStore().addNotification('Failed to retrieve profile picture.');
+                }
             }
 
             this.loadingQuestionnaireProfilePicture = false;

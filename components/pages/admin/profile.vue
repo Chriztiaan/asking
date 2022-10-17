@@ -55,7 +55,8 @@
                     <div class="f-12 w-500 subtext--text">This will permanently delete your account.</div>
                 </div>
 
-                <v-btn color="warning" width="150" @click="deleteAccount">Delete</v-btn>
+                <v-btn v-if="!warning" color="warning" width="150" @click="confirmDelete">Delete</v-btn>
+                <v-btn v-else color="warning" outlined width="150" @click="deleteAccount">Are you sure?</v-btn>
             </div>
         </div>
     </div>
@@ -68,7 +69,6 @@ import { useProfileStore } from '@/store/profileStore';
 import { Profile } from '@/store/types/DatabaseModels';
 import { useNotificationStore } from '@/store/notificationStore';
 import { useAuthStore } from '@/store/authStore';
-import { supabase } from '@/store/setup/supabase';
 
 export default Vue.extend({
     data() {
@@ -79,6 +79,7 @@ export default Vue.extend({
             internalName: '',
             internalReference: '',
             internalBio: '',
+            warning: false,
 
             // hackerman
             document
@@ -177,8 +178,10 @@ export default Vue.extend({
                 useProfileStore().upsertProfile(newProfile);
             }
         },
+        confirmDelete(): void {
+            this.warning = true;
+        },
         deleteAccount(): void {
-            // todo
             useAuthStore().delete();
         }
     }

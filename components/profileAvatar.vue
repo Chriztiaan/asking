@@ -1,14 +1,16 @@
 <template>
-    <v-badge bordered bottom color="secondary" dot offset-x="10" offset-y="45">
-        <v-avatar size="50">
-            <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
-                <v-progress-circular :size="50" :width="4" color="tertiary" indeterminate></v-progress-circular>
-            </div>
-            <v-img v-else :src="profilePicture" referrerpolicy="no-referrer"></v-img>
-            <!-- Hack -->
-            <img v-show="false" :src="profilePicture" referrerpolicy="no-referrer" />
-        </v-avatar>
-    </v-badge>
+    <v-btn icon v-bind="$attrs" @click="$emit('click', $event)">
+        <v-badge bordered bottom color="secondary" dot offset-x="10" offset-y="45">
+            <v-avatar size="50">
+                <div v-if="loadingProfilePicture" class="d-flex align-center justify-center" style="height: 150px">
+                    <v-progress-circular :size="50" :width="4" color="tertiary" indeterminate></v-progress-circular>
+                </div>
+                <v-img v-else :src="profilePicture" referrerpolicy="no-referrer"></v-img>
+                <!-- Hack -->
+                <img v-show="false" :src="profilePicture" referrerpolicy="no-referrer" />
+            </v-avatar>
+        </v-badge>
+    </v-btn>
 </template>
 
 <script lang="ts">

@@ -1,9 +1,12 @@
 <template>
-    <v-row justify="center" align="center"> index </v-row>
+    <home />
 </template>
 
 <script>
+import home from './home.vue';
 export default {
-    name: 'IndexPage'
+    name: 'HomePage',
+    components: { home },
+    layout: 'admin'
 };
 </script>
