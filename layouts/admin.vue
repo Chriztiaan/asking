@@ -41,6 +41,8 @@
                     <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/" nuxt> Home </v-btn>
                     <v-btn v-if="hasUser" class="f-18 w-700" :outlined="isMobile" width="100" text to="/admin" nuxt :link="true"> Manage </v-btn>
                     <v-btn v-else class="f-18 w-700" :outlined="isMobile" width="100" text to="/login" nuxt :link="true"> Login </v-btn>
+                    <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/about" nuxt> About </v-btn>
+
                     <v-spacer />
                 </template>
                 <div v-if="!isMobile" class="d-flex gap-3 align-center">
@@ -107,7 +109,7 @@ export default Vue.extend({
         height(): number {
             if (this.isMobile) {
                 if (this.drawer) {
-                    return 192;
+                    return 244;
                 }
                 return 76;
             } else {
