@@ -189,7 +189,6 @@ export default Vue.extend({
 }
 
 :deep(.text-field) {
-    width: 430px !important;
-    max-width: min(100%, 430px) !important;
+    width: 100% !important;
 }
 </style>
