@@ -19,7 +19,7 @@ todo
 [X] Home page
 
 -------------
-
+[] try supabase commands
 [] Some default questions (Ask People)
 
 

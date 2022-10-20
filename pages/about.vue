@@ -12,8 +12,7 @@
             <br /><br />
             This might also ease the lives of recruiters as they can opt to ask the candidates to share their respective Pallet forms, or even ask them to create their
             question list for the first time. I feel that this can help candidates understand what they like and dislike about an opportunity a lot quicker than a typical
-            instant messaging conversation, saving candidates and recruiters a lot of time. get to the crux of the information that they are interested in about prospective
-            opportunities which saves them and the recruiters a lot of time. instant messaging conversation, saving candidates and recruiters a lot of time.
+            instant messaging conversation, saving candidates and recruiters a lot of time.
         </div>
         <div class="text--text d-flex mt-4" style="font-size: 20px">Disclaimer</div>
         <div class="text--text" style="font-size: 14px; max-width: 650px; text-align: center">
