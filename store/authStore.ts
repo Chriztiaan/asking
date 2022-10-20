@@ -6,7 +6,7 @@ import { supabase } from './setup/supabase';
 import { Profile, Questionnaire } from './types/DatabaseModels';
 
 export const urlBase = location.protocol + '//' + location.host;
-export const urlAdmin = urlBase + '/admin/';
+export const urlAdmin = urlBase + '/manage/';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({

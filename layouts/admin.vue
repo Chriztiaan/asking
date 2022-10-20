@@ -39,7 +39,7 @@
                 </template>
                 <template v-if="!isMobile || drawer">
                     <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/" nuxt> Home </v-btn>
-                    <v-btn v-if="hasUser" class="f-18 w-700" :outlined="isMobile" width="100" text to="/admin" nuxt :link="true"> Manage </v-btn>
+                    <v-btn v-if="hasUser" class="f-18 w-700" :outlined="isMobile" width="100" text to="/manage" nuxt :link="true"> Manage </v-btn>
                     <v-btn v-else class="f-18 w-700" :outlined="isMobile" width="100" text to="/login" nuxt :link="true"> Login </v-btn>
                     <v-btn class="f-18 w-700" :outlined="isMobile" width="100" text to="/about" nuxt> About </v-btn>
 
@@ -136,7 +136,7 @@ export default Vue.extend({
         guard(): void {
             const route = this.$router.currentRoute.name;
             const authed = this.userLoaded && this.hasUser;
-
+            console.log(route);
             if (!this.userLoaded) {
                 return;
             }
@@ -145,10 +145,12 @@ export default Vue.extend({
             }
 
             if (route == 'login' && authed) {
-                this.$router.push('/admin');
+                this.$router.push('/manage');
+                return;
             }
 
-            if (route == 'admin' && !authed) {
+            if (route == 'manage' && !authed) {
+                console.log('ahaha');
                 this.$router.push('/login');
             }
         },

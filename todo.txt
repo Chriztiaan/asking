@@ -17,14 +17,14 @@ todo
 [X] Add confirmation to delete acc thing
 [X] Default title
 [X] Home page
+[x] RLS - Look at examples on supabase
 
 -------------
-[] try supabase commands
 [] Some default questions (Ask People)
 
-
-[] RLS
-
 [] Oauth logo?
+[] General scan
+[] Tablet size issue
+[] Domain
 
 
