@@ -51,7 +51,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', {
             const { data, error } = await supabase.from('questions').select().match({ questionnaire_id: questionnaireId }).order('created_at', { ascending: true }).limit(50);
 
             if (!error) {
-                this.questions = data;
+                this.questions = data.filter((d) => !!d.content);
             } else {
                 useNotificationStore().addNotification('Failed to retrieve questions.');
             }
