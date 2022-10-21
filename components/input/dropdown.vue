@@ -42,10 +42,7 @@ export default Vue.extend({
         },
         items: {
             type: Array as PropType<DropdownOption[]>,
-            default: (): DropdownOption[] => [
-                { label: 'Travel', icon: 'mdi-airplane', class: '' },
-                { label: 'Holiday', icon: 'mdi-home', class: '' }
-            ]
+            default: (): DropdownOption[] => []
         },
         value: {
             type: Object as PropType<DropdownOption | undefined>,
