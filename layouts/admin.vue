@@ -74,6 +74,7 @@
                 <v-container> <Nuxt /> </v-container>
             </v-main>
         </v-main>
+        <my-footer />
         <snackbar />
     </v-app>
 </template>

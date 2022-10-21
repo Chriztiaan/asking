@@ -18,13 +18,12 @@ todo
 [X] Default title
 [X] Home page
 [x] RLS - Look at examples on supabase
+[x] General scan
+[x] Tablet size issue
 
 -------------
-[] Some default questions (Ask People)
 
 [] Oauth logo?
-[] General scan
-[] Tablet size issue
 [] Domain
 
 
