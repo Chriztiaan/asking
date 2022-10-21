@@ -15,6 +15,7 @@ export default {
             lang: 'en'
         },
         meta: [
+            { name: 'google-site-verification', content: 'C0EQxaGWvQoz2lsiyi1X-0xBdPsrCuMNuTtrCDffnKA' },
             { charset: 'utf-8' },
             {
                 name: 'viewport',
